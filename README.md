@@ -1,0 +1,2 @@
+# GEStoryV1
+We develop GEStory, an on-line atlas of gestures resulting from gesture elicitation studies with four main functionalities: (1) search for user-defined gestures identified in such studies by querying its features in an interactive design space, (2) show the preferred gestures and their characteristics for a given action (represented through a referent) with a given device  in an environment and/or carried out with various body parts, (3) compare the existing studies and (4) suggest adding new studies. Our corpus is 267 papers.
