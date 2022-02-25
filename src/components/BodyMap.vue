@@ -172,6 +172,9 @@
 				<path id="body-path" ref="body" d="m 312.37721,270.62065 c -2.45909,0.41499 -22.479,3.98143 -40.39364,12.90746 -13.61812,6.78615 -25.81546,16.74689 -29.62368,30.1706 -0.70323,2.16738 -10.61784,33.46406 -7.26484,62.81569 0.009,0.62964 -0.0287,4.93139 -2.37532,12.72253 -0.85313,2.26866 -8.41116,23.36793 -10.91544,65.16801 -0.72968,1.80744 -2.75338,6.71131 -5.87271,13.37418 -0.82447,1.29889 -2.49436,4.53621 -4.51035,11.72414 -3.6517,13.02084 -9.17611,41.22879 -13.78345,100.93705"  class="positioning"/>
 
 			</svg>
+<div id="linkToSuggest">
+		<a href="suggest.html">Suggest a GES</a>
+	</div>
 </div>
 </template>
 
@@ -256,6 +259,10 @@ module.exports = {
 </script>
 
 <style scoped>
+	a {color:#D99100;
+		text-decoration: none;
+	}
+	
 	#bodyMap {
 		width: 20%;
 		top: 2%;
@@ -316,20 +323,13 @@ line.replication {
 		stroke:#5280ba;
 		stroke-width: 6px;
 	}
-	
-@media (max-width: 700px) {
+  @media (max-width: 700px) {
 	#bodyMap{
 		width: 55%;
 		margin-left : 22.5%;
 		margin-top: 18%;
 	}
 }
+	
 
-@media (max-width: 300px) {
-	#bodyMap{
-		width: 55%;
-		margin-left : 22.5%;
-		margin-top: 37%;
-	}
-}
 </style>
