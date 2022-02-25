@@ -1,6 +1,26 @@
 var page = 0
 var pages = ["bodyMap", "DataFilter", "itemDisplay"]
-var step = 0
+
+
+
+let touchstartX = 0
+let touchendX = 0
+
+const slider = document.getElementById('slider')
+
+function handleGesture() {
+  if (touchendX < touchstartX) swipe(-1)
+  if (touchendX > touchstartX) swipe(1)
+}
+
+slider.addEventListener('touchstart', e => {
+  touchstartX = e.changedTouches[0].screenX
+})
+
+slider.addEventListener('touchend', e => {
+  touchendX = e.changedTouches[0].screenX
+  handleGesture()
+})
 
 function swipe(direction) {
     /**
@@ -10,15 +30,9 @@ function swipe(direction) {
     if ((page==2 && direction==-1) || (page == 0 && direction==1)){
         return
     }
-    page += -direction
+    document.getElementById(pages[page]).style.display = "none"
+    page -= direction
     document.getElementById(pages[page]).style.display = "block";
-    var interval = setInterval(()=>{
-        if (step == 10){
-            step = 0
-            clearInterval(interval);
-        }
-        step++
-    }, 50)
     actualizeArrows()
 }
 
