@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="header"><img src="img/UCL_logo.png" height="40" alt=""><img src="img/GEStoryLogo.png" height="40" alt=""><img src="img/LouRIM.png" height="40" alt=""><a href="license.html">License</a></div>
+    <div id="header"><img src="img/UCL_logo.png" height="30" alt=""><img src="img/GEStoryLogo.png" height="30" alt=""><img src="img/LouRIM.png" height="30" alt=""><a href="license.html">License</a></div>
     <BodyMap v-on:body-area-selected="onBodyAreaSelected($event)" :filteredData="filteredData"></BodyMap>
     <DataFilter v-model="filteredData"></DataFilter>
     <ItemDisplay></ItemDisplay>
