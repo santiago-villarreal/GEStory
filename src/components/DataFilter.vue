@@ -252,7 +252,7 @@ const subFilters = [];
 	width:50%;
 	margin-right:30%;
 	margin-left:20%;
-	margin-top:4%;
+	margin-top:8%;
 }
 /* The filter part */
 [type="radio"]{
@@ -357,12 +357,57 @@ h2.title {
 	word-break:break-all;
 	text-align: center;
     }
-	.bar:hover{
-		background-color: #F00;
-		content: attr(title);
-		font-size: 60%;
+.bar:hover{
+	background-color: #F00;
+	content: attr(title);
+	font-size: 60%;
 
+}
+
+
+@media (max-width: 700px) {
+	#DataFilter{
+		width: 90%;
+		margin-top: 15%;
+		margin-left: 5%;
+		margin-right: 0%;
+		padding-right: 0%;
 	}
+
+	#filters{
+		width: 100%;
+	}
+
+	.segmented-control__item {
+	width : 50%;
+	}
+
+	.user{
+		width : 40%;
+	}
+}
+
+@media (max-width: 300px) {
+	#DataFilter{
+		width: 90%;
+		margin-top: 40%;
+		margin-left: 5%;
+		margin-right: 0%;
+		padding-right: 0%;
+	}
+
+	#filters{
+		width: 100%;
+	}
+
+	.segmented-control__item {
+	width : 100%;
+	}
+
+	.user{
+		width : 100%;
+	}
+}
 
 
 </style>

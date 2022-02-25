@@ -139,6 +139,8 @@
 		max-height: 95%;
 		background-color: white;
 		border-left: solid 2px black;
+		margin-top : 5px;
+		z-index : -1;
 	}
 	#authorList {
 		display: inline table;
@@ -198,4 +200,29 @@
 		font-size: 60%;
 
 	}
+
+
+@media (max-width: 700px) {
+	#itemDisplay{
+		width: 100%;
+		height: 100%;
+		margin-top : 2%;
+	}
+
+	table.details{
+		margin-bottom : 25px;
+	}
+}
+
+@media (max-width: 300px) {
+	#itemDisplay{
+		width: 100%;
+		height: 100%;
+		margin-top : 20%;
+	}
+
+	table.details{
+		margin-bottom : 100px;
+	}
+}
 </style>
