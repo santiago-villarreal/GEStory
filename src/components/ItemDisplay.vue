@@ -137,6 +137,8 @@
 		right:0;
 		overflow-y: scroll;
 		max-height: 95%;
+		background-color: white;
+		border-left: solid 2px black;
 	}
 	#authorList {
 		display: inline table;

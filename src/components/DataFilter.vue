@@ -264,6 +264,8 @@ const subFilters = [];
 fieldset {
 	padding: 0px 1em;
 	text-align: left;
+	display : flex;
+	flex-wrap: wrap;
 }
 
 
@@ -272,10 +274,12 @@ fieldset {
 }
 
 .segmented-control {
-    display: inline-table;
+    display: flex;
     width: 90%;
     margin: 0.25em 1em;
     padding: 0;
+	flex-wrap: wrap;
+	margin-bottom: 15px;
 }
 
 .segmented-control__item {
@@ -283,6 +287,7 @@ fieldset {
     margin: 0;
     padding: 0;
     list-style-type: none;
+	width : 33%;
 }
 
 .segmented-control__input {
@@ -301,6 +306,7 @@ fieldset {
     text-align: center;
 
     cursor: pointer;
+	height: 40px;
 }
 
 .segmented-control__label:hover {
