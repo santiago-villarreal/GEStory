@@ -329,6 +329,12 @@ line.replication {
 		margin-left : 22.5%;
 		margin-top: 18%;
 	}
+
+	@media (max-width: 300px) {
+	#bodyMap{
+		margin-top: 37%;
+	}
+}
 }
 	
 
