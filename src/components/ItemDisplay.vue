@@ -57,9 +57,9 @@
 				<td class="detail">Is the repurposing of </td>
 				<td><p v-for="(repE, index) in item.repurposingOf" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></td>
 			</tr>
-			<tr>
+			<tr v-if="item.body">
 				<td class="detail">Body part</td>
-				<td>{{item.body | capitalize}}</td>
+				<td><span v-for="(userB, index) in item.body" :key="index"><span v-if="index>0">, </span> {{userB | capitalize}}</span></td>
 			</tr>
 			<tr>
 				<td class="detail">Device</td>
@@ -90,8 +90,32 @@
 				<td>{{item.symmetry | capitalize }}</td>
 			</tr>
 			<tr>
-				<td class="detail">Locale Gesture</td>
+				<td class="detail">Locale gesture</td>
 				<td>{{item.locale | capitalize}}</td>
+			</tr>
+			<tr v-if="item.perspective">
+				<td class="detail">Perspective</td>
+				<td><span v-for="(userP, index) in item.perspective" :key="index"><span v-if="index>0">, </span> {{userP | capitalize}}</span></td>
+			</tr>
+			<tr v-if="item.frame">
+				<td class="detail">Frame</td>
+				<td><span v-for="(userF, index) in item.frame" :key="index"><span v-if="index>0">, </span> {{userF | capitalize}}</span></td>
+			</tr>
+			<tr v-if="item.body_context">
+				<td class="detail">Body context</td>
+				<td><span v-for="(userBC, index) in item.body_context" :key="index"><span v-if="index>0">, </span> {{userBC | capitalize}}</span></td>
+			</tr>
+			<tr v-if="item.environmental_context">
+				<td class="detail">Envrionmental context</td>
+				<td><span v-for="(userE, index) in item.environmental_context" :key="index"><span v-if="index>0">, </span> {{userE | capitalize}}</span></td>
+			</tr>
+			<tr>
+				<td class="detail"> Color</td>
+				<td>{{item.color | capitalize}}</td>
+			</tr>
+			<tr v-if="item.gesture_elements">
+				<td class="detail">Gesture elements</td>
+				<td><span v-for="(userG, index) in item.gesture_elements" :key="index"><span v-if="index>0">, </span> {{userG | capitalize}}</span></td>
 			</tr>
 			<tr v-if="item.agreement">
 				<td class="detail">Agreement</td>

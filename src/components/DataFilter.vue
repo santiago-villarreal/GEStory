@@ -70,7 +70,7 @@
 		},
 		{
 		'key': 'user', 
-		'values': ["civilian","children","infantrymen","elderly","old"],
+		'values': ["Children","Teenagers","Adult","Elderly","Old"],
 		'filterValues': [],
 		'multipleSelection': true,
 		},
@@ -112,7 +112,7 @@
 		},
 		{
 		'key': 'year', 
-		'values': ["2012","2014","2017","2018","2019","2020","2021","2022"],
+		'values': ["1999","2006","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020"],
 		'filterValues': [],
 		'multipleSelection': true,
 		}
