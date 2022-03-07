@@ -1,7 +1,8 @@
 
 <template>
 <div id="DataFilter">
-	<div id="filters">
+	<!-- display if wide screen-->
+	<div id="filters" v-if="window_Width">
 		<fieldset
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
@@ -19,24 +20,43 @@
 <!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
 		</fieldset>
 	</div>
+
+
+	<div id="filters" v-if="!window_Width">
+		<select name="filters" id="filterSelect" v-model="select">
+			<option
+			v-for="(filter, index) in filters"
+			v-bind:key="index"
+			:value="'filter-'+index"
+			>{{filter.key | capitalize}}</option>
+		</select>
+
+		<div 
+		v-for="(filter, index) in filters"
+		v-bind:key="index"
+		>
+			<fieldset  
+			:id="'filter-'+index" 
+			v-bind:class="{ active: isFilterActive(filter) }"
+			v-if="isSelected('filter-'+index)">
+			<legend>{{filter.key | capitalize }}</legend>
+				<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters">
+				<ul	class="segmented-control">
+					<li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
+						<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input">
+						<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
+					</li>
+				</ul>
+	<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
+			</fieldset>
+		</div>
+
+	</div>
+
+
 	<input type="checkbox" name="tableView" value="true" /> Table view
 <!-- <span>Active filters: {{ activeFilters }}</span>
  <ul class="userWrap" v-if="tableView===false">-->
-
-<!--
-<ul class="userWrap">
-	<li
-	v-for="(entry, index) in filteredData"
-	:key="index"
-	:item="entry"
-	class="user"
-	v-on:click="$root.$emit('did-select-item',entry);"
-	>
-		<h2 class="title">{{ entry.name | capitalize}}</h2>
-		<span class="language"><strong>{{ entry.title | capitalize}}</strong></span>
-		<div class="bar" :style="'--bar-value:'+(entry.credibility*100)+'%;'" :title="'Credibility: '+entry.credibility">{{entry.credibility}}</div>
-	</li>
-</ul>-->
 
 	<ul class="number-pages">
 		<li 
@@ -240,7 +260,9 @@ const itemsPerPages = 2;
 				filters: gestureFilters,		// The list of all possible filters, will be used later when the user can dynamically create a filter set
 				activeFilters: [],  // The active filters
 				data: [],			// The data this component works on
-				page: 0
+				page: 0,
+				displayedFilter: 0,
+				select: "filter-0"
 			};
 		},
 		created() {
@@ -297,6 +319,12 @@ const itemsPerPages = 2;
 					this.$emit("input", value);
 				},
 				immediate: true
+			},
+			window_Width: {
+				handler: function (value) {
+					this.$emit("input", value);
+				},
+				immediate: true
 			}
 		},
 		methods: {
@@ -321,8 +349,11 @@ const itemsPerPages = 2;
 			},
 			isActive: function (number){
 				return number - 1 == this.page ? "activePage" : ""
+			},
+			isSelected: function (id){
+				console.log(id == this.select)
+				return id == this.select;
 			}
-			
 		},
 		computed: {
 			filteredData: function () {
@@ -348,9 +379,9 @@ const itemsPerPages = 2;
 				let array = []
 
 				array.push(1)
-				array.push(2)
+				if (this.window_Width) {array.push(2)}
 
-				if (this.page > 4){array.push("...")}
+				if ((this.page>3 && !this.window_Width) || this.page > 4){array.push("...")}
 				
 				for (let index = -2; index < 3; index++) {
 					if (!array.includes(this.page + index + 1) && this.page + index >=1 && this.page + index + 1 < this.pageNumber - 2){
@@ -358,13 +389,16 @@ const itemsPerPages = 2;
 					}
 				}
 
-
 				if ((this.page < this.pageNumber-6)){ array.push("...")}
 
-				if (!array.includes(this.pageNumber-2)){ array.push(this.pageNumber-2) }
+				if ((!array.includes(this.pageNumber-2) && this.window_Width)|| (this.page > this.pageNumber-5)){ array.push(this.pageNumber-2) }
 				if (!array.includes(this.pageNumber-1)){ array.push(this.pageNumber-1) }
 
 				return array
+			},
+			window_Width: function(){
+				console.log(window.innerWidth)
+				return window.innerWidth > 400;
 			}
 		},
 	};
@@ -505,11 +539,12 @@ h2.title {
 	display: flex;
 	background-color: #333;
 	color: white;
-	margin: 0px 5px;
+	margin: 1px 3px;
 	width: 20px;
 	border-radius: 5px;
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
 }
 
 .activePage{
