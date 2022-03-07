@@ -45,9 +45,20 @@ a {
   text-align: right;
 }
 #contentSug {
-  position: fixed;
   left: 15px;
   top: 0px;
   width: 90%;
+}
+
+@media (min-width : 300px){
+  #contentSug {
+      position: fixed;
+  }
+}
+@media (max-width: 300px) {
+  #contentSug{
+    margin-top: 32%;
+    position : absolute;  
+  }
 }
 </style>

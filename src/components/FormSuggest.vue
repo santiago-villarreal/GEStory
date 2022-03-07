@@ -92,7 +92,12 @@ export default {
 </script>
 
 <style>
-
+	@media (max-width: 300px) {
+    #contentSug{
+      margin-top: 32%;
+      position : absolute;  
+    }
+  }
     
 
 </style>

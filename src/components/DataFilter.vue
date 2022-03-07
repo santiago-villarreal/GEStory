@@ -22,9 +22,25 @@
 	<input type="checkbox" name="tableView" value="true" /> Table view
 <!-- <span>Active filters: {{ activeFilters }}</span>
  <ul class="userWrap" v-if="tableView===false">-->
+
+<!--
 <ul class="userWrap">
 	<li
 	v-for="(entry, index) in filteredData"
+	:key="index"
+	:item="entry"
+	class="user"
+	v-on:click="$root.$emit('did-select-item',entry);"
+	>
+		<h2 class="title">{{ entry.name | capitalize}}</h2>
+		<span class="language"><strong>{{ entry.title | capitalize}}</strong></span>
+		<div class="bar" :style="'--bar-value:'+(entry.credibility*100)+'%;'" :title="'Credibility: '+entry.credibility">{{entry.credibility}}</div>
+	</li>
+</ul>-->
+
+<ul class="userWrap">
+	<li
+	v-for="(entry, index) in filteredDataPage"
 	:key="index"
 	:item="entry"
 	class="user"
@@ -137,6 +153,8 @@
 	//End gestureFilters
 
 const subFilters = [];
+
+const itemsPerPages = 2;
 	
 	
 /*
@@ -174,7 +192,8 @@ const subFilters = [];
 			return {
 				filters: gestureFilters,		// The list of all possible filters, will be used later when the user can dynamically create a filter set
 				activeFilters: [],  // The active filters
-				data: []			// The data this component works on
+				data: [],			// The data this component works on
+				page: 0
 			};
 		},
 		created() {
@@ -219,6 +238,18 @@ const subFilters = [];
 					this.$emit("input", value);
 				},
 				immediate: true
+			},
+			filteredDataPage: {
+				handler: function (value) {
+					this.$emit("input", value);
+				},
+				immediate: true
+			},
+			pagesNumber : {
+				handler: function (value) {
+					this.$emit("input", value);
+				},
+				immediate: true
 			}
 		},
 		methods: {
@@ -240,6 +271,13 @@ const subFilters = [];
 				}
 				return this.data.filter(useConditions(filterList));
 			},
+			filteredDataPage : () => {
+				return this.filteredData.slice(this.page*itemsPerPages, (this.page+1)*itemsPerPages)
+			},
+			pagesNumbers : () => {
+				let mod = (this.filteredData.length % itemsPerPages)
+				return ((this.filteredData.length - mod)/itemsPerPages) + (mod/mod) + 1
+			}
 		},
 	};
 </script>

@@ -49,5 +49,13 @@ a {
   left: 15px;
   top: 0px;
   width: 90%;
+  z-index : -1;
+}
+
+@media (max-width: 300px) {
+  #contentSug{
+    margin-top: 32%;
+    position : absolute;  
+  }
 }
 </style>

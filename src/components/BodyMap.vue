@@ -332,7 +332,7 @@ line.replication {
 
 	@media (max-width: 300px) {
 	#bodyMap{
-		margin-top: 37%;
+		margin-top: 28%;
 	}
 }
 }
