@@ -38,19 +38,66 @@
 	</li>
 </ul>-->
 
-<ul class="userWrap">
-	<li
-	v-for="(entry, index) in filteredDataPage"
-	:key="index"
-	:item="entry"
-	class="user"
-	v-on:click="$root.$emit('did-select-item',entry);"
-	>
-		<h2 class="title">{{ entry.name | capitalize}}</h2>
-		<span class="language"><strong>{{ entry.title | capitalize}}</strong></span>
-		<div class="bar" :style="'--bar-value:'+(entry.credibility*100)+'%;'" :title="'Credibility: '+entry.credibility">{{entry.credibility}}</div>
-	</li>
-</ul>
+	<ul class="number-pages">
+		<li 
+		v-if="page>0"
+		v-on:click="decrementPage()"
+		style="display:flex; align-item:center">
+		<img src="../../public/img/chevron-left-solid-24.png" height="18px">
+		</li>
+		<li
+		v-for="(entry, index) in pagesList"
+		:key="index"
+		:item="entry"
+		:class="'number '+isActive(entry)"
+		v-on:click="changePage(entry)"
+		>
+		{{entry}}
+		</li>
+		<li 
+		v-if="page<pageNumber-2"
+		v-on:click="incrementPage()"
+		style="display:flex; align-item:center">
+		<img src="../../public/img/chevron-right-solid-24.png" height="18px">
+		</li>
+	</ul>
+	<ul class="userWrap">
+		<li
+		v-for="(entry, index) in filteredDataPage"
+		:key="index"
+		:item="entry"
+		class="user"
+		v-on:click="$root.$emit('did-select-item',entry);"
+		>
+			<h2 class="title">{{ entry.name | capitalize}}</h2>
+			<span class="language"><strong>{{ entry.title | capitalize}}</strong></span>
+			<div class="bar" :style="'--bar-value:'+(entry.credibility*100)+'%;'" :title="'Credibility: '+entry.credibility">{{entry.credibility}}</div>
+		</li>
+	</ul>
+
+	<ul class="number-pages">
+		<li 
+		v-if="page>0"
+		v-on:click="decrementPage()"
+		style="display:flex; align-item:center">
+		<img src="../../public/img/chevron-left-solid-24.png" height="18px">
+		</li>
+		<li
+		v-for="(entry, index) in pagesList"
+		:key="index"
+		:item="entry"
+		:class="'number '+isActive(entry)"
+		v-on:click="changePage(entry)"
+		>
+		{{entry}}
+		</li>
+		<li 
+		v-if="page<pageNumber-2"
+		v-on:click="incrementPage()"
+		style="display:flex; align-item:center">
+		<img src="../../public/img/chevron-right-solid-24.png" height="18px">
+		</li>
+	</ul>
 </div>
 </template>
 
@@ -245,7 +292,7 @@ const itemsPerPages = 2;
 				},
 				immediate: true
 			},
-			pagesNumber : {
+			pageNumber : {
 				handler: function (value) {
 					this.$emit("input", value);
 				},
@@ -259,7 +306,22 @@ const itemsPerPages = 2;
 			isFilterActive: function(filter) {
 				return this.activeFilters.includes(this.filters.indexOf(filter));
 			},
-			
+			changePage: function(number){
+				if (number == "..."){ return }
+				this.page = number - 1;
+				return 1;
+			},
+			incrementPage: function (){
+				this.page++;
+				return
+			},
+			decrementPage: function (){
+				this.page--;
+				return
+			},
+			isActive: function (number){
+				return number - 1 == this.page ? "activePage" : ""
+			}
 			
 		},
 		computed: {
@@ -271,12 +333,38 @@ const itemsPerPages = 2;
 				}
 				return this.data.filter(useConditions(filterList));
 			},
-			filteredDataPage : () => {
+			filteredDataPage : function () {		
+				if (!this.filteredData){
+					return [];
+				}
 				return this.filteredData.slice(this.page*itemsPerPages, (this.page+1)*itemsPerPages)
 			},
-			pagesNumbers : () => {
+			pageNumber : function (){
 				let mod = (this.filteredData.length % itemsPerPages)
-				return ((this.filteredData.length - mod)/itemsPerPages) + (mod/mod) + 1
+				return ((this.filteredData.length - mod)/itemsPerPages) + (mod != 0 ? 1 : 0) + 1
+			},
+			pagesList : function () {
+
+				let array = []
+
+				array.push(1)
+				array.push(2)
+
+				if (this.page > 4){array.push("...")}
+				
+				for (let index = -2; index < 3; index++) {
+					if (!array.includes(this.page + index + 1) && this.page + index >=1 && this.page + index + 1 < this.pageNumber - 2){
+						array.push(this.page + index + 1)
+					}
+				}
+
+
+				if ((this.page < this.pageNumber-6)){ array.push("...")}
+
+				if (!array.includes(this.pageNumber-2)){ array.push(this.pageNumber-2) }
+				if (!array.includes(this.pageNumber-1)){ array.push(this.pageNumber-1) }
+
+				return array
 			}
 		},
 	};
@@ -400,6 +488,32 @@ h2.title {
 	content: attr(title);
 	font-size: 60%;
 
+}
+
+.number-pages{
+	display: flex;
+	flex-direction: row;
+	list-style: none;
+	margin-left : 0px;
+	padding-left: 0px;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.number{
+	display: flex;
+	background-color: #333;
+	color: white;
+	margin: 0px 5px;
+	width: 20px;
+	border-radius: 5px;
+	align-items: center;
+	justify-content: center;
+}
+
+.activePage{
+	background-color: #586aec;
 }
 
 
