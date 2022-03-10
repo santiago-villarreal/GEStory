@@ -30,5 +30,8 @@ module.exports = {
     title:"Manage GEStory"
   }
 
+  },
+  devServer: {
+    disableHostCheck: true
   }
 };
