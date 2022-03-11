@@ -23,7 +23,7 @@
 
 
 	<div id="filters" v-if="!window_Width">
-		<select name="filters" id="filterSelect" v-model="select">
+		<select name="filters" id="filterSelect" v-model="select" >
 			<option
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
@@ -221,7 +221,7 @@
 
 const subFilters = [];
 
-const itemsPerPages = 2;
+const itemsPerPages = 40;
 	
 	
 /*
@@ -398,7 +398,7 @@ const itemsPerPages = 2;
 			},
 			window_Width: function(){
 				console.log(window.innerWidth)
-				return window.innerWidth > 400;
+				return window.innerWidth > 500;
 			}
 		},
 	};
