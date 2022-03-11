@@ -268,6 +268,7 @@ module.exports = {
 		top: 2%;
 		left:0;
 		position: fixed;
+		margin-top: 5%;
 	}
 	#bodyoutline {
 		fill:none; 
@@ -325,16 +326,15 @@ line.replication {
 	}
   @media (max-width: 700px) {
 	#bodyMap{
-		width: 55%;
-		margin-left : 22.5%;
+		width: auto;
+		height: 70%;
+		margin-left : 12.5%;
 		margin-top: 18%;
 	}
 
 	@media (max-width: 300px) {
 	#bodyMap{
-		width: 70%;
-		margin-top: 100px;
-		margin-left : 15%;
+		margin-top: 40%;
 	}
 }
 }

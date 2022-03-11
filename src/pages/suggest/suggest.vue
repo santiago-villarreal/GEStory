@@ -43,6 +43,8 @@ a {
   background-color:  #c7b062;
   color: white;
   text-align: right;
+  display: flex;
+  align-items: center;
 }
 #contentSug {
   position: fixed;
@@ -56,6 +58,11 @@ a {
   #contentSug{
     margin-top: 32%;
     position : absolute;  
+  }
+
+  #header {
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 }
 </style>

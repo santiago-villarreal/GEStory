@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="header"><img src="img/UCL_logo.png" height="30" alt=""><img src="img/GEStoryLogo.png" height="30" alt=""><img src="img/LouRIM.png" height="30" alt=""><a href="license.html">License</a></div>
+    <div id="header"><img src="img/UCL_logo.png" height="30" alt=""><img src="img/GEStoryLogo.png" height="25" alt="" style="margin-right:auto"><img src="img/LouRIM.png" height="30" alt=""><a href="license.html">License</a></div>
     <BodyMap v-on:body-area-selected="onBodyAreaSelected($event)" :filteredData="filteredData"></BodyMap>
     <DataFilter v-model="filteredData"></DataFilter>
     <ItemDisplay></ItemDisplay>
@@ -64,10 +64,19 @@
   background-color:  #c7b062;
   color: white;
   text-align: right;
+  display: flex;
+  align-items: center;
 }
 
 .logo {
   margin-left: 10px;
   padding: 2px;
+}
+
+@media (max-width: 500px) {
+	#header {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
 }
 </style>

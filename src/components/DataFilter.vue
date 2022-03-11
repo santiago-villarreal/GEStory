@@ -1,29 +1,9 @@
 
 <template>
 <div id="DataFilter">
-	<!-- display if wide screen-->
-	<div id="filters" v-if="window_Width">
-		<fieldset
-			v-for="(filter, index) in filters"
-			v-bind:key="index"
-			:id="'filter-'+index"
-			v-bind:class="{ active: isFilterActive(filter) }"
-		>
-		<legend>{{filter.key | capitalize }}</legend>
-			<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters">
-			<ul	class="segmented-control">
-				<li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
-					<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input">
-					<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
-				</li>
-			</ul>
-<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
-		</fieldset>
-	</div>
 
-
-	<div id="filters" v-if="!window_Width">
-		<select name="filters" id="filterSelect" v-model="select" >
+	<div id="filters" >
+		<select name="filters" id="filterSelect" v-model="select" v-if="!window_Width">
 			<option
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
@@ -153,7 +133,7 @@
 		},
 		{
 		'key': 'user', 
-		'values': ["civilian","children","infantrymen","elderly","old"],
+		'values': ["Children","Teenagers","Adult","Elderly","Old"],
 		'filterValues': [],
 		'multipleSelection': true,
 		},
@@ -195,7 +175,7 @@
 		},
 		{
 		'key': 'year', 
-		'values': ["2012","2014","2017","2018","2019","2020","2021","2022"],
+		'values': ["1999","2006","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020"],
 		'filterValues': [],
 		'multipleSelection': true,
 		}
@@ -351,8 +331,7 @@ const itemsPerPages = 40;
 				return number - 1 == this.page ? "activePage" : ""
 			},
 			isSelected: function (id){
-				console.log(id == this.select)
-				return id == this.select;
+				return id == this.select || this.window_Width;
 			}
 		},
 		computed: {
@@ -375,11 +354,11 @@ const itemsPerPages = 40;
 				return ((this.filteredData.length - mod)/itemsPerPages) + (mod != 0 ? 1 : 0) + 1
 			},
 			pagesList : function () {
-
+				if (this.filteredDataPage.length == 0) return []
 				let array = []
 
 				array.push(1)
-				if (this.window_Width) {array.push(2)}
+				if (this.window_Width && this.pageNumber > 2) {array.push(2)}
 
 				if ((this.page>3 && !this.window_Width) || this.page > 4){array.push("...")}
 				
@@ -391,8 +370,10 @@ const itemsPerPages = 40;
 
 				if ((this.page < this.pageNumber-6)){ array.push("...")}
 
-				if ((!array.includes(this.pageNumber-2) && this.window_Width)|| (this.page > this.pageNumber-5)){ array.push(this.pageNumber-2) }
-				if (!array.includes(this.pageNumber-1)){ array.push(this.pageNumber-1) }
+				if ( (this.pageNumber-2 > 0) && (!array.includes(this.pageNumber-2) && this.window_Width)){ 
+					array.push(this.pageNumber-2) }
+				if ((this.pageNumber-1 > 0) && !array.includes(this.pageNumber-1)){ 
+					array.push(this.pageNumber-1) }
 
 				return array
 			},
@@ -595,6 +576,4 @@ h2.title {
 		width : 100%;
 	}
 }
-
-
 </style>

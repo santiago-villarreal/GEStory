@@ -18,7 +18,7 @@
 
     <p>This version is part of a prototype, This work is based on the tool:</p>
 
-<p style="margin: 0px 100px 0px 100px;">Florian Heller, Kashyap Todi, and Kris Luyten. An Interactive Design Space for Wearable Displays. In <i>MobileHCI&nbsp;’21: Proceedings of the the 23rd International Conference on Human-Computer Interaction with Mobile Devices and Services</i>, MobileHCI&nbsp;’21, 2021, <a href="http://dx.doi.org/10.1145/3447526.347203">10.1145/3447526.347203</a>. </p>
+<p class="ref">Florian Heller, Kashyap Todi, and Kris Luyten. An Interactive Design Space for Wearable Displays. In <i>MobileHCI&nbsp;’21: Proceedings of the the 23rd International Conference on Human-Computer Interaction with Mobile Devices and Services</i>, MobileHCI&nbsp;’21, 2021, <a href="http://dx.doi.org/10.1145/3447526.347203">10.1145/3447526.347203</a>. </p>
 
 <p><a href="javascript:history.back()"> Return</a></p>
     </div>
@@ -48,6 +48,8 @@ a {
   background-color:  #c7b062;
   color: white;
   text-align: right;
+  display: flex;
+  align-items: center;
 }
 #contentLic {
   position: fixed;
@@ -55,5 +57,26 @@ a {
   top: 0px;
   width: 90%;
 
+}
+
+.ref{
+  margin: 0px 100px 0px 100px;
+}
+
+@media (max-width: 600px) {
+  #contentLic {
+    position: relative;
+    top: 80px;
+    z-index: -1;
+  }
+
+  .ref{
+    margin: 0px 10px;
+  }
+
+	#header {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
 }
 </style>
