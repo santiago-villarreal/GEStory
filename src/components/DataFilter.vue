@@ -3,7 +3,7 @@
 <div id="DataFilter">
 
 	<div id="filters" >
-		<select name="filters" id="filterSelect" v-model="select" v-if="!window_Width">
+		<select name="filters" id="filterSelect" style="margin-bottom:20px;" v-model="select" v-if="!window_Width">
 			<option
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
@@ -20,10 +20,10 @@
 			v-bind:class="{ active: isFilterActive(filter) }"
 			v-if="isSelected('filter-'+index)">
 			<legend>{{filter.key | capitalize }}</legend>
-				<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters">
+				<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(0)">
 				<ul	class="segmented-control">
 					<li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
-						<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input">
+						<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(0)">
 						<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
 					</li>
 				</ul>
@@ -279,6 +279,10 @@ const itemsPerPages = 40;
 					}
 				}
 			});
+			this.$root.$on('input', (a)=>{
+				this.page = 0;
+				console.log(a)
+			})
 
 		},
 		watch: {
@@ -332,6 +336,10 @@ const itemsPerPages = 40;
 			},
 			isSelected: function (id){
 				return id == this.select || this.window_Width;
+			},
+			setPage: function (newPage){
+				this.page = newPage;
+				return 0;
 			}
 		},
 		computed: {
@@ -358,11 +366,12 @@ const itemsPerPages = 40;
 				let array = []
 
 				array.push(1)
-				if (this.window_Width && this.pageNumber > 2) {array.push(2)}
+				if ( this.pageNumber > 2) {array.push(2)}
 
-				if ((this.page>3 && !this.window_Width) || this.page > 4){array.push("...")}
+				if (this.page>3 || this.page > 4){array.push("...")}
 				
-				for (let index = -2; index < 3; index++) {
+				let min = this.window_Width ? -2 : -1
+				for (let index = min; index < -min + 1; index++) {
 					if (!array.includes(this.page + index + 1) && this.page + index >=1 && this.page + index + 1 < this.pageNumber - 2){
 						array.push(this.page + index + 1)
 					}
@@ -370,7 +379,7 @@ const itemsPerPages = 40;
 
 				if ((this.page < this.pageNumber-6)){ array.push("...")}
 
-				if ( (this.pageNumber-2 > 0) && (!array.includes(this.pageNumber-2) && this.window_Width)){ 
+				if ( this.pageNumber-2 > 0 && !array.includes(this.pageNumber-2)){ 
 					array.push(this.pageNumber-2) }
 				if ((this.pageNumber-1 > 0) && !array.includes(this.pageNumber-1)){ 
 					array.push(this.pageNumber-1) }
