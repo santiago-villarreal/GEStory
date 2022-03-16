@@ -349,7 +349,8 @@ const itemsPerPages = 40;
 				for (let index of this.activeFilters) {
 					filterList[this.filters[index]['key']] = this.filters[index]['filterValues'];
 				}
-				return this.data.filter(useConditions(filterList));
+				console.warn("here")
+				return this.data.filter(useConditions(filterList)).sort((a,b)=>{return b.credibility - a.credibility});
 			},
 			filteredDataPage : function () {		
 				if (!this.filteredData){

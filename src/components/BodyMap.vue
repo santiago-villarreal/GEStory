@@ -15,6 +15,7 @@
 							class="bodyItemSelector"
 							:class="{selected: filteredData.find(({name}) => name === item.name) != undefined, selectedItem: isSelectedItem(item.name)}"
 						/>
+					
 				</g>
 				<g id="Head-Group" serif:id="Head Group" v-bind:class="{ selected: dataFilter.filterValues.includes('head')}">
 					<path id="Head" d="M490.95,304.147c-9.886,-3.158 -17.6,-4.426 -17.6,-4.426c-37.9,-9.7 -39.3,-20.4 -39.3,-20.4l0,-31c4.3,-3.9 3.6,-14 3.6,-14c1.9,3.1 5.5,-1.6 5.5,-1.6c19.3,-31.7 2.5,-31 2.5,-31c0,0 6.6,-8.3 4.7,-18.7c0,0 5.8,-32.5 -19.4,-39c0,0 -0.4,-8.1 -9.7,-10.8c0,0 5,3.5 1.5,4.6c0,0 -18.9,-13.1 -32.1,-4.6c0,0 -24.7,-5.2 -36.3,22.6c0,0 -8.5,7.5 -4.7,21.4c0,0 -5.6,11.1 4.8,24.5c0,0 -16.7,-0.7 2.6,31c0,0 4.8,4.7 6.7,1.6c0,0 0.9,10.1 5.2,14l0,30.8c0,0 -3,10.7 -40.9,20.4c0,0 -8.422,1.339 -19,4.724" class="background" v-on:click="changeBodySelection('head')"/>
@@ -309,6 +310,12 @@ module.exports = {
 		display:none;
 	}
 
+	.rect{
+		width: 50px;
+		height: 50px;
+		background-color: greenyellow;
+	}
+
 line.replication {
 		fill:#976644; 
 		stroke:#976644;
@@ -333,7 +340,7 @@ line.replication {
 
 	@media (max-width: 300px) {
 	#bodyMap{
-		margin-top: 40%;
+		margin-top: 38%;
 	}
 }
 }
