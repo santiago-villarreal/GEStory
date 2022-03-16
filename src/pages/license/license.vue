@@ -54,9 +54,8 @@ a {
 #contentLic {
   position: fixed;
   left: 15px;
-  top: 0px;
   width: 90%;
-
+  top:5%
 }
 
 .ref{

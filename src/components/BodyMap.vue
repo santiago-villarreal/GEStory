@@ -196,6 +196,7 @@ module.exports = {
 				'filterValues': [], 
 				'multipleSelection': true,
 				},
+			gestePage: []
 		};
 	},
 	mounted() {
@@ -215,6 +216,9 @@ module.exports = {
 			if(item.repurposing){cirE = document.getElementById(item.name+item.title);console.log(item.repurposing);for( i=0; i<item.repurposing.length; i++){cirR = document.getElementById(item.repurposing[i][2]+item.repurposing[i][0]); this.drawLineR(cirR.style.x, cirR.style.y, cirE.style.x, cirE.style.y, '#5280ba');}}
 			
 		});
+		this.$root.$on('pageNumber', (page)=>{
+			this.gestePage = page
+		})
 	},
 	methods: {
 		changeBodySelection: function(area) {
@@ -235,7 +239,7 @@ module.exports = {
 			
 		},
 		dataForBodyArea: function(area) {
-			return this.data.filter(element => ((element.location == area) || (Array.isArray(element.location) && element.location.includes(area)))); 
+			return this.gestePage.filter(element => ((element.location == area) || (Array.isArray(element.location) && element.location.includes(area)))); 
 		},
 		getPositionForTypeAndItem: function (type, index, number) {
 			// Get the path along which the items should be distributed

@@ -59,7 +59,8 @@
 			</tr>
 			<tr v-if="item.body">
 				<td class="detail">Body part</td>
-				<td><span v-for="(userB, index) in item.body" :key="index"><span v-if="index>0">, </span> {{userB | capitalize}}</span></td>
+				<td v-if="Array.isArray(item.body)"><span v-for="(userB, index) in item.body" :key="index"><span v-if="index>0">, </span> {{userB | capitalize}}</span></td>
+				<td v-if="!Array.isArray(item.body)"> {{item.body | capitalize}}</td>
 			</tr>
 			<tr>
 				<td class="detail">Device</td>

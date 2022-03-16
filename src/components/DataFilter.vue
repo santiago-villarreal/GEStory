@@ -242,7 +242,8 @@ const itemsPerPages = 40;
 				data: [],			// The data this component works on
 				page: 0,
 				displayedFilter: 0,
-				select: "filter-0"
+				select: "filter-0",
+				filter_page: []
 			};
 		},
 		created() {
@@ -281,7 +282,7 @@ const itemsPerPages = 40;
 			});
 			this.$root.$on('input', (a)=>{
 				this.page = 0;
-				console.log(a)
+				a;
 			})
 
 		},
@@ -349,13 +350,13 @@ const itemsPerPages = 40;
 				for (let index of this.activeFilters) {
 					filterList[this.filters[index]['key']] = this.filters[index]['filterValues'];
 				}
-				console.warn("here")
 				return this.data.filter(useConditions(filterList)).sort((a,b)=>{return b.credibility - a.credibility});
 			},
 			filteredDataPage : function () {		
 				if (!this.filteredData){
 					return [];
 				}
+				this.$root.$emit('pageNumber', this.filteredData.slice(this.page*itemsPerPages, (this.page+1)*itemsPerPages))
 				return this.filteredData.slice(this.page*itemsPerPages, (this.page+1)*itemsPerPages)
 			},
 			pageNumber : function (){
@@ -388,7 +389,6 @@ const itemsPerPages = 40;
 				return array
 			},
 			window_Width: function(){
-				console.log(window.innerWidth)
 				return window.innerWidth > 500;
 			}
 		},
