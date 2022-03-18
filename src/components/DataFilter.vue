@@ -20,10 +20,10 @@
 				v-bind:class="{ active: isFilterActive(filter) }"
 				v-if="isSelected('filter-'+index)">
 				<legend>{{filter.key | capitalize }}</legend>
-					<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(0)">
+					<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(1)">
 					<ul	class="segmented-control">
 						<li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
-							<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(0)">
+							<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(1)">
 							<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
 						</li>
 					</ul>
@@ -46,16 +46,24 @@
 				v-on:click="$root.$emit('did-select-item',entry);"
 				>
 				<b-card
-				:title="entry.name"
+				no-body
 				:header="entry.body"
 				:header-bg-variant="switchBodyPart(entry.body)"
 				tag="article"
 				class="mb-2 card"
 				>
-				<b-card-text>
-				{{ entry.title | capitalize}}
-				<div class="bar" :style="'--bar-value:'+(entry.credibility*100)+'%;'" :title="'Credibility: '+entry.credibility">{{entry.credibility}}</div>
-				</b-card-text>
+					<b-card-body>
+						<b-card-title>{{entry.name}}</b-card-title>
+						<b-card-text>
+						{{ entry.title | capitalize}}
+						</b-card-text>
+					</b-card-body>
+					<b-list-group flush>
+						<b-list-group-item>{{entry.year}}</b-list-group-item>
+					</b-list-group>
+					<template #footer>
+						<div class="bar" :style="'--bar-value:'+(entry.credibility*100)+'%;'" :title="'Credibility: '+entry.credibility">{{entry.credibility}}</div>
+					</template>
 				</b-card>
 				</b-card-group>
 			</ul>
@@ -306,10 +314,24 @@ const itemsPerPages = 40;
 			},
 			switchBodyPart: function(area){
 				switch(area){
-					case("finger"):
-						return "warning"
-					default:
+					case("arm"):
 						return "primary"
+					case("wrist"):
+						return "primary"
+					case("finger"):
+						return "success"
+					case("torso"):
+						return "info"
+					case("head"):
+						return "info"
+					case("shoulder"):
+						return "info"
+					case("full-body"):
+						return "warning"
+					case("hand"):
+						return "danger"
+					default:
+						return "secondary"
 				}
 			}
 		},
@@ -448,14 +470,14 @@ h2.title {
 .bar {
     background-color:#05386b;
     width:var(--bar-value);
-    height: 15px;
     align-self:flex-end;
     margin-left: 0px;
-    border-radius:3px 3px 0 0;
 	color: #fff;
 	font-size: 80%;
 	word-break:break-all;
 	text-align: center;
+	height: 20px;
+    border-radius: 5px;
     }
 .bar:hover{
 	background-color: #F00;
@@ -471,9 +493,14 @@ h2.title {
 	display: flex;
 }
 
+.card-header{
+	text-transform: capitalize;
+}
+
 .card-title{
 	font-size: 14px;
 	font-weight: bold;
+
 }
 
 .card-text{
