@@ -1,5 +1,5 @@
 <template>
-	<div id="itemDisplay">
+	<div id="itemDisplay" v-if="Object.entries(item).length !== 0">
 		<h1 class="itemName">{{this.item.name| capitalize}}</h1>
 		<h1 class="itemTitle">{{this.item.title}}</h1>
 		<ul v-for="(author,index) in item.authors" 

@@ -1,103 +1,70 @@
 
 <template>
-<div id="DataFilter">
+<div id="DataFilter" :class="reduce">
+	<div class="flex-container">
+		<div id="filters" >
+			<select name="filters" id="filterSelect" style="margin-bottom:20px;" v-model="select" v-if="!window_Width">
+				<option
+				v-for="(filter, index) in filters"
+				v-bind:key="index"
+				:value="'filter-'+index"
+				>{{filter.key | capitalize}}</option>
+			</select>
 
-	<div id="filters" >
-		<select name="filters" id="filterSelect" style="margin-bottom:20px;" v-model="select" v-if="!window_Width">
-			<option
+			<div 
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
-			:value="'filter-'+index"
-			>{{filter.key | capitalize}}</option>
-		</select>
+			>
+				<fieldset  
+				:id="'filter-'+index" 
+				v-bind:class="{ active: isFilterActive(filter) }"
+				v-if="isSelected('filter-'+index)">
+				<legend>{{filter.key | capitalize }}</legend>
+					<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(0)">
+					<ul	class="segmented-control">
+						<li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
+							<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(0)">
+							<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
+						</li>
+					</ul>
+		<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
+				</fieldset>
+			</div>
 
-		<div 
-		v-for="(filter, index) in filters"
-		v-bind:key="index"
-		>
-			<fieldset  
-			:id="'filter-'+index" 
-			v-bind:class="{ active: isFilterActive(filter) }"
-			v-if="isSelected('filter-'+index)">
-			<legend>{{filter.key | capitalize }}</legend>
-				<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(0)">
-				<ul	class="segmented-control">
-					<li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
-						<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(0)">
-						<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
-					</li>
-				</ul>
-	<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
-			</fieldset>
 		</div>
 
+	<!-- <span>Active filters: {{ activeFilters }}</span>
+	<ul class="userWrap" v-if="tableView===false">-->
+
+		<div>
+			<ul class="userWrap">
+				<b-card-group columns
+				v-for="(entry, index) in filteredDataPage"
+				:key="index"
+				:item="entry"
+				class="user"
+				v-on:click="$root.$emit('did-select-item',entry);"
+				>
+				<b-card
+				:title="entry.name"
+				:header="entry.body"
+				:header-bg-variant="switchBodyPart(entry.body)"
+				tag="article"
+				class="mb-2 card"
+				>
+				<b-card-text>
+				{{ entry.title | capitalize}}
+				<div class="bar" :style="'--bar-value:'+(entry.credibility*100)+'%;'" :title="'Credibility: '+entry.credibility">{{entry.credibility}}</div>
+				</b-card-text>
+				</b-card>
+				</b-card-group>
+			</ul>
+			<div>
+				<input id="slide" type="range" min="1" :max="pageNumber" step="1" v-model.number="page">
+				<div> <input type="text" :value="page" @change="setPage($x)">/{{pageNumber}}</div>
+			</div>
+		</div>
 	</div>
-
-
-	<input type="checkbox" name="tableView" value="true" /> Table view
-<!-- <span>Active filters: {{ activeFilters }}</span>
- <ul class="userWrap" v-if="tableView===false">-->
-
-	<ul class="number-pages">
-		<li 
-		v-if="page>0"
-		v-on:click="decrementPage()"
-		style="display:flex; align-item:center">
-		<img src="../../public/img/chevron-left-solid-24.png" height="18px">
-		</li>
-		<li
-		v-for="(entry, index) in pagesList"
-		:key="index"
-		:item="entry"
-		:class="'number '+isActive(entry)"
-		v-on:click="changePage(entry)"
-		>
-		{{entry}}
-		</li>
-		<li 
-		v-if="page<pageNumber-2"
-		v-on:click="incrementPage()"
-		style="display:flex; align-item:center">
-		<img src="../../public/img/chevron-right-solid-24.png" height="18px">
-		</li>
-	</ul>
-	<ul class="userWrap">
-		<li
-		v-for="(entry, index) in filteredDataPage"
-		:key="index"
-		:item="entry"
-		class="user"
-		v-on:click="$root.$emit('did-select-item',entry);"
-		>
-			<h2 class="title">{{ entry.name | capitalize}}</h2>
-			<span class="language"><strong>{{ entry.title | capitalize}}</strong></span>
-			<div class="bar" :style="'--bar-value:'+(entry.credibility*100)+'%;'" :title="'Credibility: '+entry.credibility">{{entry.credibility}}</div>
-		</li>
-	</ul>
-
-	<ul class="number-pages">
-		<li 
-		v-if="page>0"
-		v-on:click="decrementPage()"
-		style="display:flex; align-item:center">
-		<img src="../../public/img/chevron-left-solid-24.png" height="18px">
-		</li>
-		<li
-		v-for="(entry, index) in pagesList"
-		:key="index"
-		:item="entry"
-		:class="'number '+isActive(entry)"
-		v-on:click="changePage(entry)"
-		>
-		{{entry}}
-		</li>
-		<li 
-		v-if="page<pageNumber-2"
-		v-on:click="incrementPage()"
-		style="display:flex; align-item:center">
-		<img src="../../public/img/chevron-right-solid-24.png" height="18px">
-		</li>
-	</ul>
 </div>
 </template>
 
@@ -240,10 +207,11 @@ const itemsPerPages = 40;
 				filters: gestureFilters,		// The list of all possible filters, will be used later when the user can dynamically create a filter set
 				activeFilters: [],  // The active filters
 				data: [],			// The data this component works on
-				page: 0,
+				page: 1,
 				displayedFilter: 0,
 				select: "filter-0",
-				filter_page: []
+				filter_page: [],
+				reduce : ""
 			};
 		},
 		created() {
@@ -284,7 +252,11 @@ const itemsPerPages = 40;
 				this.page = 0;
 				a;
 			})
-
+			this.$root.$on('did-select-item',(entry)=>{
+				this.reduce = "reduce";
+				console.log(this.reduce)
+				return entry;
+			})
 		},
 		watch: {
 			filteredData: {
@@ -319,19 +291,6 @@ const itemsPerPages = 40;
 			isFilterActive: function(filter) {
 				return this.activeFilters.includes(this.filters.indexOf(filter));
 			},
-			changePage: function(number){
-				if (number == "..."){ return }
-				this.page = number - 1;
-				return 1;
-			},
-			incrementPage: function (){
-				this.page++;
-				return
-			},
-			decrementPage: function (){
-				this.page--;
-				return
-			},
 			isActive: function (number){
 				return number - 1 == this.page ? "activePage" : ""
 			},
@@ -339,8 +298,19 @@ const itemsPerPages = 40;
 				return id == this.select || this.window_Width;
 			},
 			setPage: function (newPage){
-				this.page = newPage;
+				if (newPage <= this.pageNumber){
+					this.page = newPage;
+					return 0;
+				}
 				return 0;
+			},
+			switchBodyPart: function(area){
+				switch(area){
+					case("finger"):
+						return "warning"
+					default:
+						return "primary"
+				}
 			}
 		},
 		computed: {
@@ -357,36 +327,11 @@ const itemsPerPages = 40;
 					return [];
 				}
 				this.$root.$emit('pageNumber', this.filteredData.slice(this.page*itemsPerPages, (this.page+1)*itemsPerPages))
-				return this.filteredData.slice(this.page*itemsPerPages, (this.page+1)*itemsPerPages)
+				return this.filteredData.slice((this.page-1)*itemsPerPages, this.page*itemsPerPages)
 			},
 			pageNumber : function (){
 				let mod = (this.filteredData.length % itemsPerPages)
 				return ((this.filteredData.length - mod)/itemsPerPages) + (mod != 0 ? 1 : 0) + 1
-			},
-			pagesList : function () {
-				if (this.filteredDataPage.length == 0) return []
-				let array = []
-
-				array.push(1)
-				if ( this.pageNumber > 2) {array.push(2)}
-
-				if (this.page>3 || this.page > 4){array.push("...")}
-				
-				let min = this.window_Width ? -2 : -1
-				for (let index = min; index < -min + 1; index++) {
-					if (!array.includes(this.page + index + 1) && this.page + index >=1 && this.page + index + 1 < this.pageNumber - 2){
-						array.push(this.page + index + 1)
-					}
-				}
-
-				if ((this.page < this.pageNumber-6)){ array.push("...")}
-
-				if ( this.pageNumber-2 > 0 && !array.includes(this.pageNumber-2)){ 
-					array.push(this.pageNumber-2) }
-				if ((this.pageNumber-1 > 0) && !array.includes(this.pageNumber-1)){ 
-					array.push(this.pageNumber-1) }
-
-				return array
 			},
 			window_Width: function(){
 				return window.innerWidth > 500;
@@ -397,14 +342,21 @@ const itemsPerPages = 40;
 
 <style scoped>
 
-
-
-#DataFilter {
+.reduce{
 	width:50%;
 	margin-right:30%;
+}
+
+#DataFilter {
 	margin-left:20%;
 	margin-top:8%;
 }
+
+.flex-container{
+	display: flex;
+	flex-direction: row;
+}
+
 /* The filter part */
 [type="radio"]{
   display: none;
@@ -479,10 +431,7 @@ fieldset {
   flex-direction: row;
 }
 .user {
-  padding: 10px;
   margin: 1% 0;
-  border: 1px solid #ddd;
-  border-radius: 3px;
   width: 30%;
   text-align: left;
 }
@@ -515,31 +464,24 @@ h2.title {
 
 }
 
-.number-pages{
+.card{
+	max-width: 20rem;
+	z-index:-1;
+	height: 100%;
 	display: flex;
-	flex-direction: row;
-	list-style: none;
-	margin-left : 0px;
-	padding-left: 0px;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
 }
 
-.number{
-	display: flex;
-	background-color: #333;
-	color: white;
-	margin: 1px 3px;
-	width: 20px;
-	border-radius: 5px;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
+.card-title{
+	font-size: 14px;
+	font-weight: bold;
 }
 
-.activePage{
-	background-color: #586aec;
+.card-text{
+	font-size: 12px;
+}
+
+#filters{
+	flex: 0 0 35%;
 }
 
 

@@ -1,6 +1,12 @@
 <template>
   <div id="app">
-    <div id="header"><img src="img/UCL_logo.png" height="30" alt=""><img src="img/GEStoryLogo.png" height="25" alt="" style="margin-right:auto"><img src="img/LouRIM.png" height="30" alt=""><a href="license.html">License</a></div>
+    <div id="header">
+      <img src="img/UCL_logo.png" height="30" alt="">
+      <img src="img/GEStoryLogo.png" height="25" alt="">
+      <img src="img/LouRIM.png" height="30" alt="" style="margin-right:auto">
+      <input type="search" class="button" placeholder="Recherche...">
+      <a class="button button1" href="license.html">About</a>
+      <a class="button button2" href="suggest.html">Suggest a GES</a></div>
     <BodyMap v-on:body-area-selected="onBodyAreaSelected($event)" :filteredData="filteredData"></BodyMap>
     <DataFilter v-model="filteredData"></DataFilter>
     <ItemDisplay></ItemDisplay>
@@ -40,10 +46,26 @@
   display:flex;
   justify-content:space-between;
 }
-#header a {
-  color:#2c3e50;
-  text-decoration:none;
-  margin-right:10px;
+.button {
+  display: flex;
+  text-decoration: none;
+  margin-right: 10px;
+  align-items: center;
+  height: 27px;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.button1 {
+  background-color: white;
+  color: #c7b062;
+  width: 65px;
+}
+
+.button2 {
+  background-color: rgb(52, 51, 48);
+  color: white;
+  width: 135px;
 }
 
 #footer {
@@ -72,6 +94,8 @@
   margin-left: 10px;
   padding: 2px;
 }
+
+
 
 @media (max-width: 500px) {
 	#header {
