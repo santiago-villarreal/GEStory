@@ -1,6 +1,6 @@
 
 <template>
-<div id="DataFilter" :class="reduce">
+<div id="DataFilter" :class="mainClass()" >
 	<div class="flex-container">
 		<div id="filters" >
 			<select name="filters" id="filterSelect" style="margin-bottom:20px;" v-model="select" v-if="!window_Width">
@@ -30,19 +30,32 @@
 		<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
 				</fieldset>
 			</div>
-
+			<div v-if="window_Width">
+				<div id="enable" @click="toggleBody()">
+					<div id="background"  :class="returnClass(0)">
+						<div id="buttonSlide" :class="returnClass(1)"></div>
+					</div>
+				</div>
+				Toggle the Body Map
+			</div>
 		</div>
 
 	<!-- <span>Active filters: {{ activeFilters }}</span>
 	<ul class="userWrap" v-if="tableView===false">-->
 
 		<div>
+			<!--<div>Number of gesture per page : <input type="number" min="20" max="80" :value="itemsPerPages" @change="updateItemPage($event)"></div>-->
+			<div v-if="pageNumber>=1">
+				<input id="slide" :style="'--number-page:' + Math.max(100/pageNumber, 10) + '%'" type="range" min="1" :max="pageNumber" step="1" v-model.number="page">
+				<div><input type="number" :value="page" min="1" :max="pageNumber" @change="setPage($event)">/{{pageNumber}}</div>
+			</div>
 			<ul class="userWrap">
 				<b-card-group columns
 				v-for="(entry, index) in filteredDataPage"
 				:key="index"
 				:item="entry"
 				class="user"
+				:style="reduce && window_Width ? 'width:45%' : ''"
 				v-on:click="$root.$emit('did-select-item',entry);"
 				>
 				<b-card
@@ -67,9 +80,9 @@
 				</b-card>
 				</b-card-group>
 			</ul>
-			<div>
-				<input id="slide" type="range" min="1" :max="pageNumber" step="1" v-model.number="page">
-				<div> <input type="text" :value="page" @change="setPage($x)">/{{pageNumber}}</div>
+			<div v-if="pageNumber>=1">
+				<input id="slide" :style="'--number-page:' + Math.max(100/pageNumber, 10) + '%'" type="range" min="1" :max="pageNumber" step="1" v-model.number="page">
+				<div><input type="number" :value="page" min="1" :max="pageNumber" @change="setPage($event)">/{{pageNumber}}</div>
 			</div>
 		</div>
 	</div>
@@ -175,8 +188,6 @@
 	//End gestureFilters
 
 const subFilters = [];
-
-const itemsPerPages = 40;
 	
 	
 /*
@@ -219,7 +230,12 @@ const itemsPerPages = 40;
 				displayedFilter: 0,
 				select: "filter-0",
 				filter_page: [],
-				reduce : ""
+				reduce : "",
+				enable : true,
+				animate : 0,
+				timer : false,
+				searchedWord : "",
+				itemsPerPages : 40
 			};
 		},
 		created() {
@@ -257,13 +273,21 @@ const itemsPerPages = 40;
 				}
 			});
 			this.$root.$on('input', (a)=>{
-				this.page = 0;
+				this.page = 1;
 				a;
-			})
+			});
 			this.$root.$on('did-select-item',(entry)=>{
 				this.reduce = "reduce";
-				console.log(this.reduce)
 				return entry;
+			});
+			this.$root.$on("close-item", (event)=>{
+				this.reduce = ""
+				return event
+			})
+			this.$root.$on("searched-words", (words) =>{
+				console.log(words)
+				this.page = 1
+				this.searchedWord = words
 			})
 		},
 		watch: {
@@ -306,9 +330,15 @@ const itemsPerPages = 40;
 				return id == this.select || this.window_Width;
 			},
 			setPage: function (newPage){
+				// https://attacomsian.com/blog/javascript-check-variable-is-object#:~:text=Unlike%20Array.isArray%20%28%29%20method%20which%20we%20used%20for,object%20is%20by%20using%20the%20Object.prototype.toString%20%28%29%20method.
+				try{
+					newPage = parseInt(newPage.target.value)
+				}
+				catch{
+					console.log(newPage)
+				}
 				if (newPage <= this.pageNumber){
 					this.page = newPage;
-					return 0;
 				}
 				return 0;
 			},
@@ -333,6 +363,59 @@ const itemsPerPages = 40;
 					default:
 						return "secondary"
 				}
+			},
+			toggleBody: function(){
+				if (this.timer) return 0
+				this.timer = true
+				if (!this.enable){
+					this.animate = -1	
+				}else{
+					this.animate = 1
+				}
+				setTimeout(()=>{
+					this.enable = !this.enable
+					this.$root.$emit("enabled-body-map", this.enable)
+					this.animate = 0
+					this.timer = false
+				}, 500)
+				
+			},
+			returnClass: function(x){
+				let ret = ""
+				if (x===1){  // slider button
+					if (this.animate>0){
+						ret += 'slideRight'
+					}else if (this.animate<0){ 
+						ret += 'slideLeft'
+					}
+					if (!this.enable){
+						ret += ' right'
+					}
+				} else{    // slider background
+					if (this.animate>0){
+						ret += 'slideWide'
+					}else if (this.animate<0){ 
+						ret += 'slideThin'
+					}
+					if (!this.enable){
+						ret += ' wide'
+					}else{
+						ret += " thin"
+					}
+				}
+				return ret
+			},
+			mainClass: function(){
+				let ret = this.reduce + " "
+				if (!this.enable){
+					ret += "margin-left-none"
+				}else{
+					ret += "margin-left-20"
+				}
+				return ret
+			},
+			updateItemPage : function (event){
+				this.itemsPerPages = event.target.value
 			}
 		},
 		computed: {
@@ -342,18 +425,24 @@ const itemsPerPages = 40;
 				for (let index of this.activeFilters) {
 					filterList[this.filters[index]['key']] = this.filters[index]['filterValues'];
 				}
-				return this.data.filter(useConditions(filterList)).sort((a,b)=>{return b.credibility - a.credibility});
+				let temp = this.data
+				for (let word of this.searchedWord.trim().split(" ")){
+					temp = temp.filter( (item)=> item.name.toLowerCase().includes(word.toLowerCase()))
+				}
+				return temp
+				.filter(useConditions(filterList))
+				.sort((a,b)=>{return b.credibility - a.credibility});
 			},
 			filteredDataPage : function () {		
 				if (!this.filteredData){
 					return [];
 				}
-				this.$root.$emit('pageNumber', this.filteredData.slice(this.page*itemsPerPages, (this.page+1)*itemsPerPages))
-				return this.filteredData.slice((this.page-1)*itemsPerPages, this.page*itemsPerPages)
+				this.$root.$emit('pageNumber', this.filteredData.slice(this.page*this.itemsPerPages, (this.page+1)*this.itemsPerPages))
+				return this.filteredData.slice((this.page-1)*this.itemsPerPages, this.page*this.itemsPerPages)
 			},
 			pageNumber : function (){
-				let mod = (this.filteredData.length % itemsPerPages)
-				return ((this.filteredData.length - mod)/itemsPerPages) + (mod != 0 ? 1 : 0) + 1
+				let mod = (this.filteredData.length % this.itemsPerPages)
+				return ((this.filteredData.length - mod)/this.itemsPerPages) + (mod != 0 ? 1 : 0)
 			},
 			window_Width: function(){
 				return window.innerWidth > 500;
@@ -363,15 +452,96 @@ const itemsPerPages = 40;
 </script>
 
 <style scoped>
+@keyframes slide{
+	from {width: 20px;}
+	to {width: 40px;}
+}
+
+@keyframes slide2{
+	from {left: 0px;}
+	to {left: 20px;}
+}
+
+.right{
+	left: 20px;
+}
+
+.wide{
+	width: 40px;
+}
+
+.thin{
+	width: 20px;
+}
+.slideRight{
+	animation-name: slide2;
+	animation-duration: 0.5s;
+	animation-timing-function: ease;
+}
+
+.slideLeft{
+	animation-name: slide2;
+	animation-duration: 0.5s;
+	animation-timing-function: ease;
+	animation-direction: reverse;
+}
+
+.slideWide{
+	height: 20px;
+	animation-name: slide;
+	animation-duration: 0.5s;
+	animation-timing-function: ease;
+}
+
+.slideThin{
+	height: 20px;
+	animation-name: slide;
+	animation-duration: 0.5s;
+	animation-timing-function: ease;
+	animation-direction: reverse;
+}
+
+#enable{
+	width: 40px;
+	height: 20px;
+	background-color: #656565;
+	border-radius: 10px;
+	display: inline-block;
+    position: relative;
+    top: 5px;
+	z-index: 1;
+}
+
+#buttonSlide{
+	position: relative;
+	height: 20px;
+	width: 20px;
+	background-color: rgb(255, 255, 255);
+	border-radius: 10px;
+	border: 1px solid #a78a8a;
+}
+
+#background{
+	height: 20px;
+	background-color: rgb(63, 157, 159);
+	position: relative;
+	border-radius: 10px;
+}
 
 .reduce{
-	width:50%;
 	margin-right:30%;
 }
 
 #DataFilter {
-	margin-left:20%;
 	margin-top:8%;
+}
+
+.margin-left-none{
+	margin-left: 0px;
+}
+
+.margin-left-20{
+	margin-left:20%;
 }
 
 .flex-container{
@@ -456,6 +626,8 @@ fieldset {
   margin: 1% 0;
   width: 30%;
   text-align: left;
+  cursor: pointer;
+  min-width: 200px;
 }
 h2.title {
   font-size: 1.3rem;
@@ -532,12 +704,16 @@ h2.title {
 	.user{
 		width : 40%;
 	}
+
+	.flex-container{
+		flex-direction: column;
+	}
 }
 
 @media (max-width: 300px) {
 	#DataFilter{
 		width: 90%;
-		margin-top: 40%;
+		margin-top: 50%;
 		margin-left: 5%;
 		margin-right: 0%;
 		padding-right: 0%;
@@ -553,6 +729,106 @@ h2.title {
 
 	.user{
 		width : 100%;
+		min-width: 0px;
 	}
+}
+
+@media (max-width: 220px) {
+	#DataFilter{
+		margin-top: 80%;
+	}
+}
+
+
+input[type=number]{
+	height: 18px;
+}
+
+input[type=range] {
+  height: 19px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 90%;
+  z-index: -2;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  box-shadow: 1px 1px 2px #000000;
+  background: #7D7D7D;
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #000000;
+  border: 1px solid #000000;
+  height: 11px;
+  width: var(--number-page);
+  border-radius: 10px;
+  background: #FFFFFF;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -1.5px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #7D7D7D;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  box-shadow: 1px 1px 2px #000000;
+  background: #7D7D7D;
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000;
+  border: 1px solid #000000;
+  height: 11px;
+  width: 50px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #7D7D7D;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px #000000;
+}
+input[type=range]::-ms-fill-upper {
+  background: #7D7D7D;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px #000000;
+}
+input[type=range]::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 1px 1px 1px #000000;
+  border: 1px solid #000000;
+  height: 11px;
+  width: 50px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #7D7D7D;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #7D7D7D;
 }
 </style>

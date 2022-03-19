@@ -20,7 +20,7 @@
 
 <p class="ref">Florian Heller, Kashyap Todi, and Kris Luyten. An Interactive Design Space for Wearable Displays. In <i>MobileHCI&nbsp;’21: Proceedings of the the 23rd International Conference on Human-Computer Interaction with Mobile Devices and Services</i>, MobileHCI&nbsp;’21, 2021, <a href="http://dx.doi.org/10.1145/3447526.347203">10.1145/3447526.347203</a>. </p>
 
-<p><a href="javascript:history.back()"> Return</a></p>
+<p><a href="javascript:history.back()"> Return to the home page</a></p>
     </div>
   </div>
 </template>

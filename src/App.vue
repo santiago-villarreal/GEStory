@@ -3,10 +3,15 @@
     <div id="header">
       <img src="img/UCL_logo.png" height="30" alt="">
       <img src="img/GEStoryLogo.png" height="25" alt="">
-      <img src="img/LouRIM.png" height="30" alt="" style="margin-right:auto">
-      <input type="search" class="button" placeholder="Recherche...">
-      <a class="button button1" href="license.html">About</a>
-      <a class="button button2" href="suggest.html">Suggest a GES</a></div>
+      <img src="img/LouRIM.png" height="30" alt="" class="endLogo">
+      <input type="search" class="button searchbar" placeholder="Recherche..." @change="searchedWord($event)">
+      <a class="button button1" href="license.html" v-if="window_Width">About</a>
+      <a class="button button2" href="suggest.html" v-if="window_Width">Suggest a GES</a>
+      <b-dropdown text="Block Level Dropdown" block variant="primary" class="m-2" v-if="!window_Width" size="sm">
+        <b-dropdown-item href="license.html">About</b-dropdown-item>
+        <b-dropdown-item href="suggest.html">Suggest a GES</b-dropdown-item>
+      </b-dropdown>
+    </div>
     <BodyMap v-on:body-area-selected="onBodyAreaSelected($event)" :filteredData="filteredData"></BodyMap>
     <DataFilter v-model="filteredData"></DataFilter>
     <ItemDisplay></ItemDisplay>
@@ -31,6 +36,16 @@
       return {
         filteredData: []
       }
+    },
+    methods: {
+      searchedWord : function (words){
+        this.$root.$emit("searched-words", words.target.value)
+      }
+    },
+    computed: {
+      window_Width: function(){
+				return window.innerWidth > 500;
+			}
     }
   };
 </script>
@@ -68,6 +83,10 @@
   width: 135px;
 }
 
+.searchbar{
+  padding: 1px;
+}
+
 #footer {
   position: fixed;
   left: 0;
@@ -88,6 +107,7 @@
   text-align: right;
   display: flex;
   align-items: center;
+  z-index: 10;
 }
 
 .logo {
@@ -95,12 +115,23 @@
   padding: 2px;
 }
 
-
+.endLogo{
+  margin-right:auto
+}
 
 @media (max-width: 500px) {
 	#header {
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .searchbar{
+    width: 175px;
+  }
+
+  .endLogo{
+    margin-right:0px;
   }
 }
 </style>

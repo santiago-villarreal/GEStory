@@ -1,132 +1,100 @@
 <template>
 	<div id="itemDisplay" v-if="Object.entries(item).length !== 0">
-		<h1 class="itemName">{{this.item.name| capitalize}}</h1>
-		<h1 class="itemTitle">{{this.item.title}}</h1>
-		<ul v-for="(author,index) in item.authors" 
-			:key="index"
-			id="authorList">
-			<li class="author">{{author}}</li> 
-		</ul>
-		<figure v-if="item.image">
-			<a :href="imageUrlForItem(item)" target="_blank" >
-			<img 
-			:src="item.image"
-			:key="item.name"
-			id="thumbnail" >
-			</a>
-			<figcaption>Image source: {{imageSourceForItem(item)}}</figcaption>
-		</figure>
-		<table class="details" v-if="item.name">
-			<tr>
-				<td class="detail">Published</td>
-				<td>{{item.published}}</td>
-			</tr>
-			<tr>
-				<td class="detail">Year</td>
-				<td>{{item.year}}</td>
-			</tr>
-			<tr>
-				<td class="detail">URL</td>
-				<td><a :href="item.url" target="_blank">{{item.url}}</a></td>
-			</tr>
-			<tr v-if="item.user">
-				<td class="detail">User type</td>
-				<td><span v-for="(userT, index) in item.user" :key="index"><span v-if="index>0">, </span> {{userT | capitalize}}</span></td>
-			</tr>
-			<tr v-if="item.replication">
-				<td class="detail">Replication</td>
-				<td><p v-for="(repE, index) in item.replication" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></td>
-			</tr>
-			<tr v-if="item.replicationOf">
-				<td class="detail">Is the replication of </td>
-				<td><p v-for="(repE, index) in item.replicationOf" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></td>
-			</tr>
-			<tr v-if="item.generalization">
-				<td class="detail">Generalization</td>
-				<td><p v-for="(repE, index) in item.generalization" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></td>
-			</tr>
-			<tr v-if="item.generalizationOf">
-				<td class="detail">Is the generalization of </td>
-				<td><p v-for="(repE, index) in item.generalizationOf" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></td>
-			</tr>
-			<tr v-if="item.repurposing">
-				<td class="detail">Repurposing</td>
-				<td><p v-for="(repE, index) in item.repurposing" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></td>
-			</tr>
-			<tr v-if="item.repurposingOf">
-				<td class="detail">Is the repurposing of </td>
-				<td><p v-for="(repE, index) in item.repurposingOf" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></td>
-			</tr>
-			<tr v-if="item.body">
-				<td class="detail">Body part</td>
-				<td v-if="Array.isArray(item.body)"><span v-for="(userB, index) in item.body" :key="index"><span v-if="index>0">, </span> {{userB | capitalize}}</span></td>
-				<td v-if="!Array.isArray(item.body)"> {{item.body | capitalize}}</td>
-			</tr>
-			<tr>
-				<td class="detail">Device</td>
-				<td>{{item.device | capitalize}}</td>
-			</tr>
-			<tr>
-				<td class="detail">Environment</td>
-				<td>{{item.environment | capitalize}}</td>
-			</tr>
-			<tr>
-				<td class="detail" >Referent</td>
-				<td>{{item.referent | capitalize}}</td>
-			</tr>
-			<tr>
-				<td class="detail">Type</td>
-				<td>{{item.type | capitalize}}</td>
-			</tr>
-			<tr>
-				<td class="detail">Form</td>
-				<td>{{item.form | capitalize}}</td>
-			</tr>
-			<tr>
-				<td class="detail"> Nature</td>
-				<td>{{item.nature | capitalize}}</td>
-			</tr>
-			<tr>
-				<td class="detail">Symmetry</td>
-				<td>{{item.symmetry | capitalize }}</td>
-			</tr>
-			<tr>
-				<td class="detail">Locale gesture</td>
-				<td>{{item.locale | capitalize}}</td>
-			</tr>
-			<tr v-if="item.perspective">
-				<td class="detail">Perspective</td>
-				<td><span v-for="(userP, index) in item.perspective" :key="index"><span v-if="index>0">, </span> {{userP | capitalize}}</span></td>
-			</tr>
-			<tr v-if="item.frame">
-				<td class="detail">Frame</td>
-				<td><span v-for="(userF, index) in item.frame" :key="index"><span v-if="index>0">, </span> {{userF | capitalize}}</span></td>
-			</tr>
-			<tr v-if="item.body_context">
-				<td class="detail">Body context</td>
-				<td><span v-for="(userBC, index) in item.body_context" :key="index"><span v-if="index>0">, </span> {{userBC | capitalize}}</span></td>
-			</tr>
-			<tr v-if="item.environmental_context">
-				<td class="detail">Envrionmental context</td>
-				<td><span v-for="(userE, index) in item.environmental_context" :key="index"><span v-if="index>0">, </span> {{userE | capitalize}}</span></td>
-			</tr>
-			<tr>
-				<td class="detail"> Color</td>
-				<td>{{item.color | capitalize}}</td>
-			</tr>
-			<tr v-if="item.gesture_elements">
-				<td class="detail">Gesture elements</td>
-				<td><span v-for="(userG, index) in item.gesture_elements" :key="index"><span v-if="index>0">, </span> {{userG | capitalize}}</span></td>
-			</tr>
-			<tr v-if="item.agreement">
-				<td class="detail">Agreement</td>
-				<td>{{item.agreement}}<div class="bar" :style="'--bar-value:'+(item.agreement*100)+'%;'" :title="'Agreement: '+item.agreement"></div></td>
-			</tr>
-			<tr>
-				<td class="detail">Credibility</td>
-				<td>{{item.credibility}}<div class="bar" :style="'--bar-value:'+(item.credibility*100)+'%;'" :title="'Credibility: '+item.credibility"></div></td>
-			</tr>
-		</table>
+
+		<div>
+			<b-card
+				no-body
+				:header-bg-variant="switchBodyPart(item.body)"
+				:border-variant="switchBodyPart(item.body)"
+			>
+				<template #header>
+					<center style="    position: relative; left: 15px;">About the gesture<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="15px" style="position : relative;top: -12px;left: 15%;" @click="gestureClose($event)"></center>
+				</template>
+
+				<b-card-body>
+				<b-card-title>{{this.item.name| capitalize}}</b-card-title>
+				<b-card-sub-title class="mb-2">By : 		
+					<ul v-for="(author,index) in item.authors" 
+						:key="index"
+						id="authorList">
+					<li class="author">{{author}}</li> 
+					</ul>
+				</b-card-sub-title>
+				<b-card-text>
+					{{this.item.title}}
+				</b-card-text>
+				<b-card-img :src="item.image" v-if="item.image" bottom></b-card-img>
+				<b-list-group flush>
+				<b-list-group-item v-if="item.image" style="justify-content : center"><b-button :href="imageSourceForItem(item)" variant="primary">Source of image</b-button></b-list-group-item>
+				<b-list-group-item style="justify-content : center"><b-button :href="item.url" variant="primary">Gesture's study</b-button></b-list-group-item>
+				
+				<b-list-group-item><span>Year :</span><span>{{item.year}}</span></b-list-group-item>
+				
+				<b-list-group-item v-if="item.published"><span>Published :</span><span>{{item.published}}</span></b-list-group-item>
+
+				<b-list-group-item><span>User type :</span><span v-for="(userT, index) in item.user" :key="index"><span v-if="index>0">, </span> {{userT | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item v-if="item.replication"><span>Replication :</span><p v-for="(repE, index) in item.replication" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></b-list-group-item>
+
+				<b-list-group-item v-if="item.replicationOf"><span>Replication of :</span><span><p v-for="(repE, index) in item.replicationOf" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></span></b-list-group-item>
+
+				<b-list-group-item v-if="item.generalization"><span>Generalization :</span><p v-for="(repE, index) in item.generalization" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></b-list-group-item>
+
+				<b-list-group-item v-if="item.generalizationOf"><span>Generalization of :</span><p v-for="(repE, index) in item.generalizationOf" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></b-list-group-item>
+
+				<b-list-group-item v-if="item.repurposing"><span>Repurposing :</span><p v-for="(repE, index) in item.repurposing" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></b-list-group-item>
+
+				<b-list-group-item v-if="item.repurposingOf"><span>Repurposing of :</span><p v-for="(repE, index) in item.repurposingOf" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></b-list-group-item>
+
+				<b-list-group-item><span>Body part :</span>
+					<span v-if="Array.isArray(item.body)"><span v-for="(userB, index) in item.body" :key="index"><span v-if="index>0">, </span> {{userB | capitalize}}</span></span> 
+					<span v-if="!Array.isArray(item.body)"> {{item.body | capitalize}}</span>
+
+				</b-list-group-item>
+
+				<b-list-group-item><span>Device :</span><span>{{item.device | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item><span>Environment :</span><span>{{item.environment | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item><span>Referent :</span><span>{{item.referent | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item><span>Type :</span><span>{{item.type | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item><span>Form :</span><span>{{item.form | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item><span>Nature :</span><span>{{item.nature | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item><span>Symmetry :</span><span>{{item.symmetry | capitalize }}</span></b-list-group-item>
+
+				<b-list-group-item><span>Locale gesture :</span><span>{{item.locale | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item v-if="item.perspective"><span>Perspective :</span><span v-for="(userP, index) in item.perspective" :key="index"><span v-if="index>0">, </span> {{userP | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item v-if="item.frame"><span>Frame :</span><span v-for="(userF, index) in item.frame" :key="index"><span v-if="index>0">, </span> {{userF | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item v-if="item.body_context"><span>Body context :</span><span v-for="(userBC, index) in item.body_context" :key="index"><span v-if="index>0">, </span> {{userBC | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item v-if="item.environmental_context"><span>Envrionmental context :</span><span v-for="(userE, index) in item.environmental_context" :key="index"><span v-if="index>0">, </span> {{userE | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item><span>Color :</span><span>{{item.color | capitalize}}</span></b-list-group-item>
+
+				<b-list-group-item v-if="item.gesture_elements"><span>Gesture elements :</span><span v-for="(userG, index) in item.gesture_elements" :key="index" style="width:100%"> {{userG | capitalize}}</span></b-list-group-item>
+
+				</b-list-group>
+
+				</b-card-body>
+
+
+				<b-card-footer>
+					Credibility : {{item.credibility}}<div class="bar" :style="'--bar-value:'+(item.credibility*100)+'%;'" :title="'Credibility: '+item.credibility"></div>
+				</b-card-footer>
+
+				<b-card-footer v-if="item.agreement">
+					Agreement : {{item.agreement}}<div class="bar" :style="'--bar-value:'+(item.agreement*100)+'%;'" :title="'Agreement: '+item.agreement"></div>
+				</b-card-footer>
+
+			</b-card>
+		</div>
 	</div>
 </template>
 
@@ -148,13 +116,60 @@
 		},
 		imageUrlForItem: function(item) {
 			return  (item.imageSource) ? item.imageSource : item.url
+		},
+		gestureClose: function(event) {
+			this.$root.$emit("close-item", this.item);
+			this.item = {};
+			console.log(event)
+			return 0;
+		},
+		switchBodyPart: function(area){
+				switch(area){
+					case("arm"):
+						return "primary"
+					case("wrist"):
+						return "primary"
+					case("finger"):
+						return "success"
+					case("torso"):
+						return "info"
+					case("head"):
+						return "info"
+					case("shoulder"):
+						return "info"
+					case("full-body"):
+						return "warning"
+					case("hand"):
+						return "danger"
+					default:
+						return "secondary"
+				}
+			}
+		},
+		window_Width: function(){
+			return window.innerWidth > 500;
 		}
-	}
 	}; //End export
 </script>
 
 
 <style scoped>
+
+	.card{
+		max-width: 20rem; 
+		margin-bottom : 50px
+	}
+
+	.list-group-item{
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+
+	.list-group-item span{
+		font-size: 14px;
+	}
+
 	#itemDisplay {
 		width: 30%;
 		position: fixed;
@@ -163,9 +178,8 @@
 		overflow-y: scroll;
 		max-height: 95%;
 		background-color: white;
-		border-left: solid 2px black;
 		margin-top : 5px;
-		z-index : -1;
+		z-index: 1;
 	}
 	#authorList {
 		display: inline table;
@@ -188,14 +202,6 @@
 		font-weight: bold;
 		margin: 0;
 	}
-
-	table.details {
-		margin:1em;
-		text-align: left;
-	}
-	td.detail {
-		font-weight: bold;
-	}
 	#thumbnail {
 		display: block;
 		width: 40%;
@@ -207,7 +213,7 @@
 		margin: 0 auto 0 auto;
 	}
 	/*bar*/
-.bar {
+	.bar {
     background-color:#05386b;
     width:var(--bar-value);
     height: 15px;
@@ -234,9 +240,6 @@
 		margin-top : 2%;
 	}
 
-	table.details{
-		margin-bottom : 25px;
-	}
 }
 
 @media (max-width: 300px) {
@@ -246,8 +249,11 @@
 		margin-top : 20%;
 	}
 
-	table.details{
-		margin-bottom : 100px;
+	.card{
+		margin-bottom: 100px;
+		margin-top : 60px;
+		width: 95%;
+		margin-left: 2.5%;
 	}
 }
 </style>

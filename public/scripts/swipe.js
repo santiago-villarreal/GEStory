@@ -37,12 +37,18 @@ function swipe(direction) {
 }
 
 function actualizeArrows(){
+    var noSelectedItem = false
     if (page==0){
         document.getElementById("arrow-left").style.display="none"
     }else{
         document.getElementById("arrow-left").style.display="block"
     }
-    if (page==2){
+    try{
+        document.getElementById("itemDisplay").style
+    }catch{
+        noSelectedItem = true
+    }
+    if (page==2 || (page==1 && noSelectedItem)){
         document.getElementById("arrow-right").style.display="none"
     }else{
         document.getElementById("arrow-right").style.display="block"
