@@ -8,7 +8,7 @@
 				:border-variant="switchBodyPart(item.body)"
 			>
 				<template #header>
-					<center style="    position: relative; left: 15px;">About the gesture<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="15px" style="position : relative;top: -12px;left: 15%;" @click="gestureClose($event)"></center>
+					<center style="position: relative; left: 15px;">About the gesture<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="15px" style="position : relative;top: -12px;left: 15%; z-index:2" @click="gestureClose($event)"></center>
 				</template>
 
 				<b-card-body>
@@ -100,54 +100,56 @@
 
 <script>
 	export default {
-	name: "ItemDisplay",
-	data: function() {
-		return {
-			item: {}
-		};
-	},
-	mounted() {
-		this.$root.$on('did-select-item', (i) => { this.item = i; 
-		});
-	},
-	methods: {
-		imageSourceForItem: function(item) {
-			return  (item.imageSourceTitle) ? item.imageSourceTitle : item.url
+		name: "ItemDisplay",
+		data: function() {
+			return {
+				item: {}
+			};
 		},
-		imageUrlForItem: function(item) {
-			return  (item.imageSource) ? item.imageSource : item.url
+		mounted() {
+			this.$root.$on('did-select-item', (i) => { this.item = i; 
+			});
 		},
-		gestureClose: function(event) {
-			this.$root.$emit("close-item", this.item);
-			this.item = {};
-			console.log(event)
-			return 0;
-		},
-		switchBodyPart: function(area){
-				switch(area){
-					case("arm"):
-						return "primary"
-					case("wrist"):
-						return "primary"
-					case("finger"):
-						return "success"
-					case("torso"):
-						return "info"
-					case("head"):
-						return "info"
-					case("shoulder"):
-						return "info"
-					case("full-body"):
-						return "warning"
-					case("hand"):
-						return "danger"
-					default:
-						return "secondary"
-				}
+		methods: {
+			imageSourceForItem: function(item) {
+				return  (item.imageSourceTitle) ? item.imageSourceTitle : item.url
+			},
+			imageUrlForItem: function(item) {
+				return  (item.imageSource) ? item.imageSource : item.url
+			},
+			gestureClose: function(event) {
+				this.$root.$emit("close-item", this.item);
+				this.item = {};
+				console.log(event)
+				return 0;
+			},
+			switchBodyPart: function(area){
+					switch(area){
+						case("arm"):
+							return "primary"
+						case("wrist"):
+							return "primary"
+						case("finger"):
+							return "success"
+						case("torso"):
+							return "info"
+						case("head"):
+							return "info"
+						case("shoulder"):
+							return "info"
+						case("full-body"):
+							return "warning"
+						case("hand"):
+							return "danger"
+						default:
+							return "secondary"
+					}
 			}
 		},
-		window_Width: function(){
-			return window.innerWidth > 500;
+		computed:{
+			window_Width: function(){
+				return window.innerWidth > 500;
+			}
 		}
 	}; //End export
 </script>
@@ -240,6 +242,13 @@
 		margin-top : 2%;
 	}
 
+	.card{
+		margin-bottom: 100px;
+		margin-top : 60px;
+		width: 95%;
+		margin-left: 2.5%;
+	}
+
 }
 
 @media (max-width: 300px) {
@@ -249,11 +258,5 @@
 		margin-top : 20%;
 	}
 
-	.card{
-		margin-bottom: 100px;
-		margin-top : 60px;
-		width: 95%;
-		margin-left: 2.5%;
-	}
 }
 </style>
