@@ -20,13 +20,13 @@
 				v-bind:class="{ active: isFilterActive(filter) }"
 				v-if="isSelected('filter-'+index)">
 				<legend @click="toggleOpen(index)" :class="filter.open ?'open' : '' ">{{filter.key | capitalize }}</legend>
-          <div :class="filter.open ?'input-field-open' : 'input-field'">
-            <ul	class="segmented-control">
-              <li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
-                <input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(1)">
-                <label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
-              </li>
-            </ul>
+          <div :class="filter.open ?'input-field-open' : 'input-field'" style="width: 93%;">
+			<b-list-group>
+				<b-list-group-item v-for="(value, vindex) in filter.values" :key="vindex">                
+					<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(1)">
+					<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
+				</b-list-group-item>
+			</b-list-group>
             <div class="checkbox" style="float: right">
             <input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(1)" style="margin: 10px">
             <label :type="'filter-'+index+'-enable'">  apply filter</label>
@@ -607,7 +607,7 @@ fieldset legend.open{
   margin-bottom: 10px;
 }
 fieldset legend.open::after{
-  transform: translateY(-50%) rotate(120deg);
+  transform: translateY(-50%) rotate(135deg);
 }
 
 .active {
