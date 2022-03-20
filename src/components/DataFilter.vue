@@ -11,22 +11,27 @@
 				>{{filter.key | capitalize}}</option>
 			</select>
 
-			<div 
+			<div
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
 			>
-				<fieldset  
-				:id="'filter-'+index" 
+				<fieldset
+				:id="'filter-'+index"
 				v-bind:class="{ active: isFilterActive(filter) }"
 				v-if="isSelected('filter-'+index)">
-				<legend>{{filter.key | capitalize }}</legend>
-					<input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(1)">
-					<ul	class="segmented-control">
-						<li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
-							<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(1)">
-							<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
-						</li>
-					</ul>
+				<legend @click="toggleOpen(index)" :class="filter.open ?'open' : '' ">{{filter.key | capitalize }}</legend>
+          <div :class="filter.open ?'input-field-open' : 'input-field'">
+            <ul	class="segmented-control">
+              <li v-for="(value, vindex) in filter.values" :key="vindex" class="segmented-control__item">
+                <input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(1)">
+                <label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
+              </li>
+            </ul>
+            <div class="checkbox" style="float: right">
+            <input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(1)" style="margin: 10px">
+            <label :type="'filter-'+index+'-enable'">  apply filter</label>
+              </div>
+          </div>
 		<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
 				</fieldset>
 			</div>
@@ -112,84 +117,96 @@
 		'values': ["full-body", "finger", "hand", "wrist", "arm", "shoulder", "head", "foot", "torso"],
 		'filterValues': [],
 		'multipleSelection': true,
+    'open': false,
 		},
 		{
-		'key': 'device', 
+		'key': 'device',
 		'values': ["smart-phone","touch-surface","smart-ring","smart-watch","prototype", "no-device"],
 		'filterValues': [],
 		'multipleSelection': true,
+    'open': false,
 		},
 		{
-		'key': 'user', 
+		'key': 'user',
 		'values': ["Children","Teenagers","Adult","Elderly","Old"],
 		'filterValues': [],
 		'multipleSelection': true,
-		},
+		'open': false,
+    },
 		{
-		'key': 'task', 
+		'key': 'task',
 		'values': ["perform action", "scale", "next", "previous", "draw object", "rotate", "increase", "decrease", "deactivate", "activate", "ok", "cancel"],
 		'filterValues': [],
 		'multipleSelection': true,
-		},
+		'open': false,
+    },
 		{
 		'key': 'type',
 		'values': ["Pointing", "Semaphoric\nStatic", "Semaphoric\nDynamic", "Semaphoric\nStroke", "Pantomimic", "Iconic\nStatic", "Iconic\nDynamic", "Manipulation"],
 		'filterValues': [],
 		'multipleSelection': true,
-		},
+		'open': false,
+    },
 		{
 		'key': 'form',
 		'values': ["Static Gesture", "Dynamic Gesture"],
 		'filterValues': [],
 		'multipleSelection': true,
-		},
+		'open': false,
+    },
 		{
 		'key': 'nature',
 		'values': ["Deictic", "Iconic", "Miming", "Physical"],
 		'filterValues': [],
 		'multipleSelection': true,
-		},
+		'open': false,
+    },
 		{
 		'key': 'symmetry',
 		'values': ["Unilateral", "Bilateral-Symmetric", "Bilateral-Asymmetric"],
 		'filterValues': [],
 		'multipleSelection': true,
-		},
+		'open': false,
+    },
 		{
 		'key': 'locale',
 		'values': ["On-the-object", "In-the-air", "Mixed"],
 		'filterValues': [],
 		'multipleSelection': true,
-		},
+		'open': false,
+    },
 		{
-		'key': 'year', 
+		'key': 'year',
 		'values': ["1999","2006","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020"],
 		'filterValues': [],
 		'multipleSelection': true,
-		}
-		
+		'open': false,
+    }
+
 		/*{
 		'key': 'Gesture type',
 		'values': ["Poiting", "Semaphoric", "Pantomimic", "Iconic", "Manipulation"],
 		'filterValues': [],
 		'multipleSelection': false,
 		'subfilters': []
+		'open': false,
 		},*/
-	]; 
-	
+	];
+
 	/*{
 		'key': 'type',
 		'values': ["Accessories", "Clothing", "Skin & Body"],
 		'filterValues': [],
 		'multipleSelection': false,
 		'subfilters': [] // Subfilters only work with multipleSelection: false
+		'open': false,
 		},*/
-	
+
 	//End gestureFilters
 
 const subFilters = [];
-	
-	
+
+
 /*
 	const subFilters = [
 	{
@@ -317,6 +334,9 @@ const subFilters = [];
 			}
 		},
 		methods: {
+      // eslint-disable-next-line no-mixed-spaces-and-tabs
+		  toggleOpen: function (index){this.filters = this.filters.map((filter, i) => {if(index === i){filter.open = !filter.open;}return filter;});
+      },
 			subFiltersForFilter(filter) {
 				return subFilters.filter( f => f.parent == filter.key && filter.filterValues.length > 0 && f.parentValue == filter.filterValues)
 			},
@@ -368,7 +388,7 @@ const subFilters = [];
 				if (this.timer) return 0
 				this.timer = true
 				if (!this.enable){
-					this.animate = -1	
+					this.animate = -1
 				}else{
 					this.animate = 1
 				}
@@ -378,14 +398,14 @@ const subFilters = [];
 					this.animate = 0
 					this.timer = false
 				}, 500)
-				
+
 			},
 			returnClass: function(x){
 				let ret = ""
 				if (x===1){  // slider button
 					if (this.animate>0){
 						ret += 'slideRight'
-					}else if (this.animate<0){ 
+					}else if (this.animate<0){
 						ret += 'slideLeft'
 					}
 					if (!this.enable){
@@ -394,7 +414,7 @@ const subFilters = [];
 				} else{    // slider background
 					if (this.animate>0){
 						ret += 'slideWide'
-					}else if (this.animate<0){ 
+					}else if (this.animate<0){
 						ret += 'slideThin'
 					}
 					if (!this.enable){
@@ -433,7 +453,7 @@ const subFilters = [];
 				.filter(useConditions(filterList))
 				.sort((a,b)=>{return b.credibility - a.credibility});
 			},
-			filteredDataPage : function () {		
+			filteredDataPage : function () {
 				if (!this.filteredData){
 					return [];
 				}
@@ -563,16 +583,55 @@ fieldset {
 	flex-wrap: wrap;
 }
 
+fieldset legend{
+  position: relative;
+  transition: all 0.4s;
+}
+
+fieldset legend::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%) rotate(0deg);
+
+  width: 30px;
+  height: 30px;
+  background-image:url("plus-symbol-button-svgrepo-com.svg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: all 0.4s linear;
+}
+fieldset legend.open{
+  margin-bottom: 10px;
+}
+fieldset legend.open::after{
+  transform: translateY(-50%) rotate(120deg);
+}
 
 .active {
 	border-color: #F00 ;
 }
 
+.input-field{
+  opacity: 0;
+  max-height: 15px;
+  overflow-y: hidden;
+  transition: all 1s;
+}
+
+input-field-open{
+  opacity: 1;
+  max-height: 1000px;
+}
+
+
 .segmented-control {
-    display: flex;
-    width: 90%;
-    margin: 0.25em 1em;
-    padding: 0;
+  display: flex;
+  width: 90%;
+  margin: 0.25em 1em;
+  padding: 0;
 	flex-wrap: wrap;
 	margin-bottom: 15px;
 }
