@@ -323,7 +323,13 @@ line.replication {
 		stroke:#5280ba;
 		stroke-width: 6px;
 	}
+  @media (max-width: 700px) {
+	#bodyMap{
+		width: 55%;
+		margin-left : 22.5%;
+		margin-top: 18%;
+	}
+}
 	
-	
-	
+
 </style>
