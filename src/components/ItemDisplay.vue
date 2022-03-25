@@ -29,11 +29,11 @@
 				<b-list-group-item v-if="item.image" style="justify-content : center"><b-button :href="imageSourceForItem(item)" variant="primary">Source of image</b-button></b-list-group-item>
 				<b-list-group-item style="justify-content : center"><b-button :href="item.url" variant="primary">Gesture's study</b-button></b-list-group-item>
 				
-				<b-list-group-item><span>Year :</span><span>{{item.year}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.year"><span>Year :</span><span>{{item.year}}</span></b-list-group-item>
 				
 				<b-list-group-item v-if="item.published"><span>Published :</span><span>{{item.published}}</span></b-list-group-item>
 
-				<b-list-group-item><span>User type :</span><span v-for="(userT, index) in item.user" :key="index"><span v-if="index>0">, </span> {{userT | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.user"><span>User type :</span><span v-for="(userT, index) in item.user" :key="index"><span v-if="index>0">, </span> {{userT | capitalize}}</span></b-list-group-item>
 
 				<b-list-group-item v-if="item.replication"><span>Replication :</span><p v-for="(repE, index) in item.replication" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></b-list-group-item>
 
@@ -47,27 +47,27 @@
 
 				<b-list-group-item v-if="item.repurposingOf"><span>Repurposing of :</span><p v-for="(repE, index) in item.repurposingOf" :key="index"> <a :href="repE[1]" target="_blank"> {{repE[0] | capitalize}} </a></p></b-list-group-item>
 
-				<b-list-group-item><span>Body part :</span>
+				<b-list-group-item v-if="item.body"><span>Body part :</span>
 					<span v-if="Array.isArray(item.body)"><span v-for="(userB, index) in item.body" :key="index"><span v-if="index>0">, </span> {{userB | capitalize}}</span></span> 
 					<span v-if="!Array.isArray(item.body)"> {{item.body | capitalize}}</span>
 
 				</b-list-group-item>
 
-				<b-list-group-item><span>Device :</span><span>{{item.device | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.device"><span>Device :</span><span>{{item.device | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Environment :</span><span>{{item.environment | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.environment"><span>Environment :</span><span>{{item.environment | capitalize}}</span></b-list-group-item>
 
 				<b-list-group-item><span>Referent :</span><span>{{item.referent.replace(",", " ") | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Type :</span><span>{{item.type | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.type"><span>Type :</span><span>{{item.type | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Form :</span><span>{{item.form | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.form"><span>Form :</span><span>{{item.form | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Nature :</span><span>{{item.nature | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.nature"><span>Nature :</span><span>{{item.nature | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Symmetry :</span><span>{{item.symmetry | capitalize }}</span></b-list-group-item>
+				<b-list-group-item v-if="item.symmetry"><span>Symmetry :</span><span>{{item.symmetry | capitalize }}</span></b-list-group-item>
 
-				<b-list-group-item><span>Locale gesture :</span><span>{{item.locale | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.locale"><span>Locale gesture :</span><span>{{item.locale | capitalize}}</span></b-list-group-item>
 
 				<b-list-group-item v-if="item.perspective"><span>Perspective :</span><span v-for="(userP, index) in item.perspective" :key="index"><span v-if="index>0">, </span> {{userP | capitalize}}</span></b-list-group-item>
 
@@ -77,7 +77,7 @@
 
 				<b-list-group-item v-if="item.environmental_context"><span>Envrionmental context :</span><span v-for="(userE, index) in item.environmental_context" :key="index" style="width:100%">{{userE | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Color :</span><span>{{item.color | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.color"><span>Color :</span><span>{{item.color | capitalize}}</span></b-list-group-item>
 
 				<b-list-group-item v-if="item.gesture_elements"><span>Gesture elements :</span><span v-for="(userG, index) in item.gesture_elements" :key="index" style="width:100%"> {{userG | capitalize}}</span></b-list-group-item>
 
@@ -86,7 +86,7 @@
 				</b-card-body>
 
 
-				<b-card-footer>
+				<b-card-footer v-if="item.credibility">
 					Credibility : {{item.credibility}}<div class="bar" :style="'--bar-value:'+(item.credibility*100)+'%;'" :title="'Credibility: '+item.credibility"></div>
 				</b-card-footer>
 
