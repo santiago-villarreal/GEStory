@@ -3,13 +3,6 @@
 <div id="DataFilter" :class="mainClass()" >
 	<div class="flex-container">
 		<div id="filters" >
-			<select name="filters" id="filterSelect" style="margin-bottom:20px;" v-model="select" v-if="!window_Width">
-				<option
-				v-for="(filter, index) in filters"
-				v-bind:key="index"
-				:value="'filter-'+index"
-				>{{filter.key | capitalize}}</option>
-			</select>
 
 			<div
 			v-for="(filter, index) in filters"
@@ -18,7 +11,7 @@
 				<fieldset
 				:id="'filter-'+index"
 				v-bind:class="{ active: isFilterActive(filter) }"
-				v-if="isSelected('filter-'+index)">
+				>
 				<legend @click="toggleOpen(index)" :class="filter.open ?'open' : '' ">{{filter.key | capitalize }}</legend>
           <div :class="filter.open ?'input-field-open' : 'input-field'" style="width: 93%;">
 			<b-list-group>
@@ -245,7 +238,6 @@ const subFilters = [];
 				data: [],			// The data this component works on
 				page: 1,
 				displayedFilter: 0,
-				select: "filter-0",
 				filter_page: [],
 				reduce : "",
 				enable : true,
@@ -397,27 +389,32 @@ const subFilters = [];
 					this.$root.$emit("enabled-body-map", this.enable)
 					this.animate = 0
 					this.timer = false
+					const temp = this.page
+					this.setPage(this.pageNumber)
+					setTimeout(()=>{
+						this.setPage(temp)
+					}, 100)
 				}, 500)
 
 			},
 			returnClass: function(x){
 				let ret = ""
 				if (x===1){  // slider button
-					if (this.animate>0){
+					if (this.animate<0){
 						ret += 'slideRight'
-					}else if (this.animate<0){
+					}else if (this.animate>0){
 						ret += 'slideLeft'
 					}
-					if (!this.enable){
+					if (this.enable){
 						ret += ' right'
 					}
 				} else{    // slider background
-					if (this.animate>0){
+					if (this.animate<0){
 						ret += 'slideWide'
-					}else if (this.animate<0){
+					}else if (this.animate>0){
 						ret += 'slideThin'
 					}
-					if (!this.enable){
+					if (this.enable){
 						ret += ' wide'
 					}else{
 						ret += " thin"
@@ -718,7 +715,6 @@ h2.title {
 }
 
 .card{
-	max-width: 20rem;
 	z-index:-1;
 	height: 100%;
 	display: flex;
@@ -740,6 +736,10 @@ h2.title {
 
 #filters{
 	flex: 0 0 35%;
+}
+
+input[type=number]{
+	height: 18px;
 }
 
 
@@ -767,6 +767,17 @@ h2.title {
 	.flex-container{
 		flex-direction: column;
 	}
+
+	input[type=number]{
+		height: 30px;;
+	}
+}
+
+@media (max-width: 500px) {
+	.user{
+		width : 100%;
+		min-width: 0px;
+	}
 }
 
 @media (max-width: 300px) {
@@ -785,11 +796,6 @@ h2.title {
 	.segmented-control__item {
 	width : 100%;
 	}
-
-	.user{
-		width : 100%;
-		min-width: 0px;
-	}
 }
 
 @media (max-width: 220px) {
@@ -798,10 +804,6 @@ h2.title {
 	}
 }
 
-
-input[type=number]{
-	height: 18px;
-}
 
 input[type=range] {
   height: 19px;

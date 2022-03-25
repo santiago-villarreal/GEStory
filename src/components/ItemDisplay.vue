@@ -8,7 +8,8 @@
 				:border-variant="switchBodyPart(item.body)"
 			>
 				<template #header>
-					<center style="position: relative; left: 15px;">About the gesture<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="15px" style="position : relative;top: -12px;left: 15%; z-index:2" @click="gestureClose($event)"></center>
+					<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="15px" style="position : relative;    position: relative;z-index: 2;align-self: self-end;width: 15px; z-index:2" @click="gestureClose($event)">
+					<center style="position: relative; left: 15px;">About the gesture</center>
 				</template>
 
 				<b-card-body>
@@ -56,7 +57,7 @@
 
 				<b-list-group-item><span>Environment :</span><span>{{item.environment | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Referent :</span><span>{{item.referent | capitalize}}</span></b-list-group-item>
+				<b-list-group-item><span>Referent :</span><span>{{item.referent.replace(",", " ") | capitalize}}</span></b-list-group-item>
 
 				<b-list-group-item><span>Type :</span><span>{{item.type | capitalize}}</span></b-list-group-item>
 
@@ -70,11 +71,11 @@
 
 				<b-list-group-item v-if="item.perspective"><span>Perspective :</span><span v-for="(userP, index) in item.perspective" :key="index"><span v-if="index>0">, </span> {{userP | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item v-if="item.frame"><span>Frame :</span><span v-for="(userF, index) in item.frame" :key="index"><span v-if="index>0">, </span> {{userF | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.frame"><span>Frame :</span><span v-for="(userF, index) in item.frame" :key="index" style="width:100%">{{userF | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item v-if="item.body_context"><span>Body context :</span><span v-for="(userBC, index) in item.body_context" :key="index"><span v-if="index>0">, </span> {{userBC | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.body_context"><span>Body context :</span><span v-for="(userBC, index) in item.body_context" :key="index" style="width:100%"> {{userBC | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item v-if="item.environmental_context"><span>Envrionmental context :</span><span v-for="(userE, index) in item.environmental_context" :key="index"><span v-if="index>0">, </span> {{userE | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.environmental_context"><span>Envrionmental context :</span><span v-for="(userE, index) in item.environmental_context" :key="index" style="width:100%">{{userE | capitalize}}</span></b-list-group-item>
 
 				<b-list-group-item><span>Color :</span><span>{{item.color | capitalize}}</span></b-list-group-item>
 
@@ -158,8 +159,13 @@
 <style scoped>
 
 	.card{
-		max-width: 20rem; 
-		margin-bottom : 50px
+		margin-bottom : 50px;
+		width : 95%;
+	}
+
+	.card-header{
+		display: flex;
+		flex-direction: column;
 	}
 
 	.list-group-item{

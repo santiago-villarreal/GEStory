@@ -7,7 +7,7 @@
       <input type="search" class="button searchbar" placeholder="Recherche..." @change="searchedWord($event)">
       <a class="button button1" href="license.html" v-if="window_Width">About</a>
       <a class="button button2" href="suggest.html" v-if="window_Width">Suggest a GES</a>
-      <b-dropdown text="Block Level Dropdown" block variant="primary" class="m-2" v-if="!window_Width" size="sm">
+      <b-dropdown text="Others" block variant="primary" class="m-2" v-if="!window_Width" size="sm">
         <b-dropdown-item href="license.html">About</b-dropdown-item>
         <b-dropdown-item href="suggest.html">Suggest a GES</b-dropdown-item>
       </b-dropdown>
