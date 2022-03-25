@@ -1,0 +1,63 @@
+[
+    {
+        "name": "gesture1",  
+        "title": "EStudio 1 blabla",
+        "authors": "Jean, Vanderdonckt and Javier, Martinez and Santiago, Villarreal-Narvaez",
+        "url": "http://www.loBonitoDeLaVida.com",
+        "checked": "noChecked",
+        "namePerso": "Pepito Calera",
+        "emailP": "pepito.calera@gmail.com"
+      },
+      {
+        "name": "gesture2",  
+        "title": "study 2 blabla",
+        "authors": "Nombre1, apellido1 and nombre2 , apellido2",
+        "url": "http://www.google.com",
+        "checked": "noChecked",
+        "namePerso": "Pepito Calera",
+        "emailP": "pepito.calera@gmail.com"
+      },
+      {
+        "name": "gesture3",  
+        "title": "study 3 blabla",
+        "authors": "Nombre3, apellido3 and nombre2 , apellido2",
+        "url": "http://www.uclouvain.be",
+        "checked": "checked",
+        "namePerso": "Pepito Calera",
+        "emailP": "pepito.calera@gmail.com"
+      },
+      {
+    "name": "mano arriba",
+    "title": "estudio mano arriba como la cancion",
+    "authors": [
+      "Juan, Paz",
+      "Melchor, Ali",
+      "Marco, Polo"
+    ],
+    "published": "ACM",
+    "year": 2022,
+    "url": "http://votte.com",
+    "user": [
+      "adult",
+      "nino",
+      "bebe"
+    ],
+    "location": "finger",
+    "body": "finger",
+    "device": "kinect",
+    "environment": "tv",
+    "referent": [
+      "play",
+      "stop"
+    ],
+    "type": "Semaphoric Static",
+    "form": "Dynamic Gesture",
+    "nature": "Iconic",
+    "symmetry": "Bilateral-Symmetric",
+    "locale": "On-the-object",
+    "agreement": 0.5,
+    "namePerso": "Pepito Habla",
+    "emailP": "santiago.villarreal@uclouvain.be",
+    "checked": "noChecked"
+  }
+]
