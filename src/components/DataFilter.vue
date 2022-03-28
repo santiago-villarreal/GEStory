@@ -12,7 +12,7 @@
 				:id="'filter-'+index"
 				v-bind:class="{ active: isFilterActive(filter) }"
 				>
-				<legend @click="toggleOpen(index)" :class="filter.open ?'open' : '' ">{{filter.key | capitalize }}</legend>
+				<legend @click="toggleOpen(index)" :class="filter.open ?'open' : '' " :style="activeFilters.includes(index) ? 'background-color: rgb(228, 206, 129);border-radius: 20px;padding: 5px;' : ''">{{filter.key | capitalize }}</legend>
           <div :class="filter.open ?'input-field-open' : 'input-field'" style="width: 93%;">
 			<b-list-group>
 				<b-list-group-item v-for="(value, vindex) in filter.values" :key="vindex">                
@@ -28,13 +28,14 @@
 		<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
 				</fieldset>
 			</div>
-			<div v-if="window_Width">
+			<div v-if="window_Width" style="display:flex; flex-direction:row;font-size: 14px;align-items: center;padding: 0px 10px;">
 				<div id="enable" @click="toggleBody()">
 					<div id="background"  :class="returnClass(0)">
 						<div id="buttonSlide" :class="returnClass(1)"></div>
 					</div>
 				</div>
-				Toggle the Body Map
+				<div>Toggle the Body Map</div>
+				<div @click="activeFilters = []" class="buttonReset">Reset filters</div>
 			</div>
 		</div>
 
@@ -454,6 +455,7 @@ const subFilters = [];
 				if (!this.filteredData){
 					return [];
 				}
+				console.log(this.activeFilters)
 				this.$root.$emit('pageNumber', this.filteredData.slice(this.page*this.itemsPerPages, (this.page+1)*this.itemsPerPages))
 				return this.filteredData.slice((this.page-1)*this.itemsPerPages, this.page*this.itemsPerPages)
 			},
@@ -525,7 +527,6 @@ const subFilters = [];
 	border-radius: 10px;
 	display: inline-block;
     position: relative;
-    top: 5px;
 	z-index: 1;
 }
 
@@ -551,6 +552,7 @@ const subFilters = [];
 
 #DataFilter {
 	margin-top:8%;
+	width: 100%;
 }
 
 .margin-left-none{
@@ -564,6 +566,19 @@ const subFilters = [];
 .flex-container{
 	display: flex;
 	flex-direction: row;
+}
+
+.buttonReset{
+	background-color: #c7b062;
+    color: white;
+    padding: 5px;
+    border-radius: 17px;
+    cursor: pointer;
+	margin-left: auto;
+}
+
+.buttonReset:hover{
+	background-color: #d0bf83;
 }
 
 /* The filter part */
@@ -589,7 +604,7 @@ fieldset legend::after{
   content: '';
   position: absolute;
   top: 50%;
-  right: 0px;
+  right: 10px;
   transform: translateY(-50%) rotate(0deg);
 
   width: 30px;
