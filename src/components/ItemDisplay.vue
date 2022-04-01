@@ -28,6 +28,13 @@
 				<b-list-group flush>
 				<b-list-group-item v-if="item.image" style="justify-content : center"><b-button :href="imageSourceForItem(item)" variant="primary">Source of image</b-button></b-list-group-item>
 				<b-list-group-item style="justify-content : center"><b-button :href="item.url" variant="primary">Gesture's study</b-button></b-list-group-item>
+
+				<b-list-group-item v-if="item.video" style="justify-content : center">
+					<video autoplay loop style="width:100%">
+					<source :src="item.video" type="video/mp4">
+					Your browser does not support the video tag.
+					</video>
+				</b-list-group-item>
 				
 				<b-list-group-item v-if="item.year"><span>Year :</span><span>{{item.year}}</span></b-list-group-item>
 				

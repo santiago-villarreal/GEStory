@@ -694,11 +694,11 @@ input-field-open{
   flex-direction: row;
 }
 .user {
-  margin: 1% 0;
-  width: 30%;
+  margin: 1% 1%;
+  flex: 1 0 30%;
   text-align: left;
   cursor: pointer;
-  min-width: 200px;
+  min-width: 175px;
 }
 h2.title {
   font-size: 1.3rem;
@@ -761,7 +761,7 @@ input[type=number]{
 @media (max-width: 700px) {
 	#DataFilter{
 		width: 90%;
-		margin-top: 15%;
+		margin-top: 30%;
 		margin-left: 5%;
 		margin-right: 0%;
 		padding-right: 0%;
@@ -798,7 +798,7 @@ input[type=number]{
 @media (max-width: 300px) {
 	#DataFilter{
 		width: 90%;
-		margin-top: 50%;
+		margin-top: 60%;
 		margin-left: 5%;
 		margin-right: 0%;
 		padding-right: 0%;
