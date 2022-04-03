@@ -8,8 +8,8 @@
 				:border-variant="switchBodyPart(item.body)"
 			>
 				<template #header>
-					<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="15px" style="position : relative;    position: relative;z-index: 2;align-self: self-end;width: 15px; z-index:2" @click="gestureClose($event)">
-					<center style="position: relative; left: 15px;">About the gesture</center>
+					<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="30px" style="position : relative;    position: relative;z-index: 2;align-self: self-end;width: 30px; z-index:2; cursor: pointer" @click="gestureClose($event)">
+					<center style="position: relative; left: 15px;font-size: 30px">About the gesture</center>
 				</template>
 
 				<b-card-body>

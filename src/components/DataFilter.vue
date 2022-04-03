@@ -3,7 +3,7 @@
 <div id="DataFilter" :class="mainClass()" >
 	<div class="flex-container">
 		<div id="filters" >
-
+      <p style="font-size: 30px; font-weight: bold">Filtre</p>
 			<div
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
@@ -34,7 +34,7 @@
 						<div id="buttonSlide" :class="returnClass(1)"></div>
 					</div>
 				</div>
-				<div>Toggle the Body Map</div>
+				<div style="margin-left: 5px">Toggle the Body Map</div>
 				<div @click="activeFilters = []" class="buttonReset">Reset filters</div>
 			</div>
 		</div>
@@ -680,7 +680,7 @@ input-field-open{
 }
 
 .segmented-control__input:checked + .segmented-control__label {
-    background: #eee;
+    background: #e4ce81;
     color: #333;
 }
 
