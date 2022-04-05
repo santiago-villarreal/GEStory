@@ -64,7 +64,7 @@
 
 				<b-list-group-item v-if="item.environment"><span>Environment :</span><span>{{item.environment | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Referent :</span><span>{{item.referent.replace(",", " ") | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.referent"><span>Referent :</span><span v-for="(userR, index) in item.referent" :key="index"><span v-if="index>0">, </span> {{userR | capitalize}}</span></b-list-group-item>
 
 				<b-list-group-item v-if="item.type"><span>Type :</span><span>{{item.type | capitalize}}</span></b-list-group-item>
 
