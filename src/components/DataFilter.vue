@@ -12,7 +12,7 @@
 				:id="'filter-'+index"
 				v-bind:class="{ active: isFilterActive(filter) }"
 				>
-				<legend @click="toggleOpen(index)" :class="filter.open ?'open' : '' " :style="activeFilters.includes(index) ? 'background-color: rgb(228, 206, 129);border-radius: 20px;padding: 5px;' : ''">{{filter.key | capitalize }}</legend>
+				<legend @click="toggleOpen(index)" :class="filter.open ?'open' : '' " :style="isFilterActive(filter) ? 'background-color: rgb(228, 206, 129);border-radius: 20px;padding: 5px;' : ''">{{filter.key | capitalize }}</legend>
           <div :class="filter.open ?'input-field-open' : 'input-field'" style="width: 93%;">
 			<b-list-group>
 				<b-list-group-item v-for="(value, vindex) in filter.values" :key="vindex">                
@@ -20,10 +20,6 @@
 					<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
 				</b-list-group-item>
 			</b-list-group>
-            <div class="checkbox" style="float: right">
-            <input :id="'filter-'+index+'-enable'" type="checkbox" :value="index" v-model="activeFilters" v-on:click="setPage(1)" style="margin: 10px">
-            <label :type="'filter-'+index+'-enable'">  apply filter</label>
-              </div>
           </div>
 		<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
 				</fieldset>
@@ -35,7 +31,7 @@
 					</div>
 				</div>
 				<div>Toggle the Body Map</div>
-				<div @click="activeFilters = []" class="buttonReset">Reset filters</div>
+				<div @click="resetFilters()" class="buttonReset">Reset filters</div>
 			</div>
 		</div>
 
@@ -334,7 +330,9 @@ const subFilters = [];
 				return subFilters.filter( f => f.parent == filter.key && filter.filterValues.length > 0 && f.parentValue == filter.filterValues)
 			},
 			isFilterActive: function(filter) {
-				return this.activeFilters.includes(this.filters.indexOf(filter));
+				console.warn(filter)
+				console.log(this.filters)
+				return this.filters[this.filters.indexOf(filter)].filterValues.length > 0;
 			},
 			isActive: function (number){
 				return number - 1 == this.page ? "activePage" : ""
@@ -378,6 +376,7 @@ const subFilters = [];
 				}
 			},
 			toggleBody: function(){
+				console.log(this.activeFilters)
 				if (this.timer) return 0
 				this.timer = true
 				if (!this.enable){
@@ -434,14 +433,22 @@ const subFilters = [];
 			},
 			updateItemPage : function (event){
 				this.itemsPerPages = event.target.value
+			},
+			resetFilters : function (){
+				for (let item of this.filters) {
+					item.filterValues = []
+				}
+				return 0;
 			}
 		},
 		computed: {
 			filteredData: function () {
 				// Collect all filterkeys, and their possible values
 				let filterList = {};
-				for (let index of this.activeFilters) {
-					filterList[this.filters[index]['key']] = this.filters[index]['filterValues'];
+				for (let item of this.filters) {
+					if (item.filterValues.length>0){
+						filterList[item['key']] = item['filterValues'];
+					}
 				}
 				let temp = this.data
 				for (let word of this.searchedWord.trim().split(" ")){
@@ -633,9 +640,10 @@ fieldset legend.open::after{
   transition: all 1s;
 }
 
-input-field-open{
+.input-field-open{
   opacity: 1;
   max-height: 1000px;
+  margin-bottom : 12px
 }
 
 
@@ -692,6 +700,7 @@ input-field-open{
   flex-wrap: wrap;
   justify-content: space-between;
   flex-direction: row;
+  justify-content: center;
 }
 .user {
   margin: 1% 1%;
@@ -699,6 +708,7 @@ input-field-open{
   text-align: left;
   cursor: pointer;
   min-width: 175px;
+  max-width: 215px;
 }
 h2.title {
   font-size: 1.3rem;
@@ -791,7 +801,7 @@ input[type=number]{
 @media (max-width: 500px) {
 	.user{
 		width : 100%;
-		min-width: 0px;
+		min-width: none;
 	}
 }
 
