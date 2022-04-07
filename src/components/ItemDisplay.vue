@@ -8,8 +8,8 @@
 				:border-variant="switchBodyPart(item.body)"
 			>
 				<template #header>
-					<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="15px" style="position : relative;    position: relative;z-index: 2;align-self: self-end;width: 15px; z-index:2" @click="gestureClose($event)">
-					<center style="position: relative; left: 15px;">About the gesture</center>
+					<img v-if="window_Width" src="../../public/img/window-close-regular-24.png" height="30px" style="position : relative;    position: relative;z-index: 2;align-self: self-end;width: 30px; z-index:2; cursor: pointer" @click="gestureClose($event)">
+					<center style="position: relative; left: 15px;font-size: 30px">About the gesture</center>
 				</template>
 
 				<b-card-body>
@@ -64,7 +64,7 @@
 
 				<b-list-group-item v-if="item.environment"><span>Environment :</span><span>{{item.environment | capitalize}}</span></b-list-group-item>
 
-				<b-list-group-item><span>Referent :</span><span>{{item.referent.replace(",", " ") | capitalize}}</span></b-list-group-item>
+				<b-list-group-item v-if="item.referent"><span>Referent :</span><span v-for="(userR, index) in item.referent" :key="index"><span v-if="index>0">, </span> {{userR | capitalize}}</span></b-list-group-item>
 
 				<b-list-group-item v-if="item.type"><span>Type :</span><span>{{item.type | capitalize}}</span></b-list-group-item>
 
