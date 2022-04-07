@@ -3,7 +3,7 @@
 <div id="DataFilter" :class="mainClass()" >
 	<div class="flex-container">
 		<div id="filters" >
-      <p style="font-size: 30px; font-weight: bold">Filtre</p>
+      <p style="font-size: 30px; font-weight: bold">Filtres</p>
 			<div
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
@@ -33,6 +33,8 @@
 				<div style="margin-left: 5px">Toggle the Body Map</div>
 				<div @click="resetFilters()" class="buttonReset">Reset filters</div>
 			</div>
+
+			<div v-if="!window_Width" @click="resetFilters()" class="buttonReset">Reset filters</div>
 		</div>
 
 	<!-- <span>Active filters: {{ activeFilters }}</span>
@@ -330,8 +332,6 @@ const subFilters = [];
 				return subFilters.filter( f => f.parent == filter.key && filter.filterValues.length > 0 && f.parentValue == filter.filterValues)
 			},
 			isFilterActive: function(filter) {
-				console.warn(filter)
-				console.log(this.filters)
 				return this.filters[this.filters.indexOf(filter)].filterValues.length > 0;
 			},
 			isActive: function (number){
@@ -376,7 +376,6 @@ const subFilters = [];
 				}
 			},
 			toggleBody: function(){
-				console.log(this.activeFilters)
 				if (this.timer) return 0
 				this.timer = true
 				if (!this.enable){
@@ -462,7 +461,6 @@ const subFilters = [];
 				if (!this.filteredData){
 					return [];
 				}
-				console.log(this.activeFilters)
 				this.$root.$emit('pageNumber', this.filteredData.slice(this.page*this.itemsPerPages, (this.page+1)*this.itemsPerPages))
 				return this.filteredData.slice((this.page-1)*this.itemsPerPages, this.page*this.itemsPerPages)
 			},
