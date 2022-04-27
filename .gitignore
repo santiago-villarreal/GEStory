@@ -1,2 +1,5 @@
 node_modules
 dist
+/public/data/GES267-GesturesV2.xlsx
+/public/data/GES267-GesturesV2.csv
+/public/data/doc.csv
