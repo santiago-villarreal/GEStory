@@ -282,10 +282,9 @@ module.exports = {
 	
 	#bodyMap {
 		width: 17%;
-		top: 2%;
 		left:0;
 		position: fixed;
-		margin-top: 5%;
+		margin-top: 65px;
 	}
 	#bodyoutline {
 		fill:none; 
@@ -349,20 +348,20 @@ line.replication {
 	}
   @media (max-width: 700px) {
 	#bodyMap{
-		width: 60%;
-		margin-left: 20%;
+		width: 80%;
+		margin-left: 10%;
 		margin-top: 18%;
 	}
 
 	@media (max-width: 300px) {
 		#bodyMap{
-			margin-top: 47%;
+			margin-top: 52%;
 		}
 	}
 
 	@media (max-width: 220px) {
 		#bodyMap{
-			margin-top: 88%;
+			margin-top: 180px
 		}
 	}
 

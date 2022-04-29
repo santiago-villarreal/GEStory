@@ -188,7 +188,7 @@
 	#itemDisplay {
 		width: 30%;
 		position: fixed;
-		top:55px;
+		top:70px;
 		right:0;
 		overflow-y: scroll;
 		max-height: 95%;

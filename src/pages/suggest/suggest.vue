@@ -6,7 +6,7 @@
     <p>Thank you for collaborating with us</p>
     <FormSuggest></FormSuggest>
     
-<p><a href="javascript:history.back()"> Return</a></p>
+<p><a href="javascript:history.back()"> <img src="../../../public/img/bx-undo.svg" width="48px"></a></p>
     </div>
   </div>
 </template>

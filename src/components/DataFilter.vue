@@ -4,9 +4,11 @@
 	<div class="flex-container">
 		<div id="filters" >
       <p style="font-size: 30px; font-weight: bold">Filtres</p>
+		<div class="listFilters">
 			<div
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
+			class="filter"
 			>
 				<fieldset
 				:id="'filter-'+index"
@@ -21,9 +23,11 @@
 				</b-list-group-item>
 			</b-list-group>
           </div>
+
 		<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
 				</fieldset>
 			</div>
+		</div>
 			<div v-if="window_Width" style="display:flex; flex-direction:row;font-size: 14px;align-items: center;padding: 0px 10px;">
 				<div id="enable" @click="toggleBody()">
 					<div id="background"  :class="returnClass(0)">
@@ -556,7 +560,7 @@ const subFilters = [];
 }
 
 #DataFilter {
-	margin-top:8%;
+	margin-top:65px;
 	width: 100%;
 }
 
@@ -603,6 +607,16 @@ fieldset {
 fieldset legend{
   position: relative;
   transition: all 0.4s;
+}
+
+.listFilters{
+	display: flex;
+    flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.filter{
+	flex : 2 1 200px;
 }
 
 fieldset legend::after{
@@ -702,10 +716,10 @@ fieldset legend.open::after{
 }
 .user {
   margin: 1% 1%;
-  flex: 1 0 30%;
+  flex: 1 0 20%;
   text-align: left;
   cursor: pointer;
-  min-width: 175px;
+  min-width: 130px;
   max-width: 215px;
 }
 h2.title {
@@ -758,7 +772,7 @@ h2.title {
 }
 
 #filters{
-	flex: 0 0 35%;
+	flex: 0 0 40%;
 }
 
 input[type=number]{

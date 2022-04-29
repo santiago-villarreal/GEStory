@@ -108,6 +108,7 @@
   display: flex;
   align-items: center;
   z-index: 10;
+  min-height: 60px;
 }
 
 .logo {
