@@ -4,7 +4,7 @@
 	<div class="flex-container">
 		<div id="filters" >
       <p style="font-size: 30px; font-weight: bold">Filtres</p>
-		<div class="listFilters">
+		<div id="filters">
 			<div
 			v-for="(filter, index) in filters"
 			v-bind:key="index"
@@ -15,14 +15,14 @@
 				v-bind:class="{ active: isFilterActive(filter) }"
 				>
 				<legend @click="toggleOpen(index)" :class="filter.open ?'open' : '' " :style="isFilterActive(filter) ? 'background-color: rgb(228, 206, 129);border-radius: 20px;padding: 5px;' : ''">{{filter.key | capitalize }}</legend>
-          <div :class="filter.open ?'input-field-open' : 'input-field'" style="width: 93%;">
-			<b-list-group>
-				<b-list-group-item v-for="(value, vindex) in filter.values" :key="vindex">                
-					<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(1)">
-					<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
-				</b-list-group-item>
-			</b-list-group>
-          </div>
+				<div :class="filter.open ?'input-field-open' : 'input-field'" style="width: 93%;">
+					<b-list-group>
+						<b-list-group-item v-for="(value, vindex) in filter.values" :key="vindex" class="value-filter">                
+							<input :id="index+vindex+value" v-bind:type="filter.multipleSelection ?  'checkbox' : 'radio'"  :value="value" v-model="filter.filterValues" class="segmented-control__input" v-on:click="setPage(1)">
+							<label class="segmented-control__label" :for="index+vindex+value">{{value | capitalize}}</label>
+						</b-list-group-item>
+					</b-list-group>
+				</div>
 
 		<!-- 			<div>{{subFiltersForFilter(filter)}}</div> -->
 				</fieldset>
@@ -609,14 +609,15 @@ fieldset legend{
   transition: all 0.4s;
 }
 
-.listFilters{
-	display: flex;
-    flex-direction: row;
-	flex-wrap: wrap;
+.value-filter{
+	flex : 1 0 45%;
+	min-width: 100px;
 }
 
-.filter{
-	flex : 2 1 200px;
+.list-group{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 fieldset legend::after{
@@ -682,7 +683,10 @@ fieldset legend.open::after{
 }
 
 .segmented-control__label {
-    display: block;
+    display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
     margin: 0 -1px -1px 0; /* -1px margin removes double-thickness borders between items */
     padding: 1em .25em;
 
@@ -692,7 +696,12 @@ fieldset legend.open::after{
     text-align: center;
 
     cursor: pointer;
-	height: 40px;
+
+	min-height: 70px;
+}
+
+.list-group-item + .list-group-item {
+     border-top-width: 1px; 
 }
 
 .segmented-control__label:hover {
@@ -814,6 +823,10 @@ input[type=number]{
 	.user{
 		width : 100%;
 		min-width: none;
+	}
+
+	.segmented-control__label{
+		min-height: 0px;
 	}
 }
 
