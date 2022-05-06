@@ -239,14 +239,12 @@ const subFilters = [];
 				filters: gestureFilters,		// The list of all possible filters, will be used later when the user can dynamically create a filter set
 				activeFilters: [],  // The active filters
 				data: [],			// The data this component works on
-				page: 1,
-				displayedFilter: 0,
-				filter_page: [],
-				reduce : "",
-				enable : true,
-				animate : 0,
-				timer : false,
-				searchedWord : "",
+				page: 1,    		// the active page
+				reduce : "",		// string representing a class => if an item is selected, we must reduce the width
+				enable : true,		// if bodyMap is toggled
+				animate : 0,		// represent direction to animate the slide button
+				timer : false,		// if animation is still active
+				searchedWord : "",	
 				itemsPerPages : 40
 			};
 		},
@@ -330,19 +328,14 @@ const subFilters = [];
 		},
 		methods: {
       // eslint-disable-next-line no-mixed-spaces-and-tabs
-		  toggleOpen: function (index){this.filters = this.filters.map((filter, i) => {if(index === i){filter.open = !filter.open;}return filter;});
-      },
+		  	toggleOpen: function (index){
+				this.filters = this.filters.map((filter, i) => {if(index === i){filter.open = !filter.open;}return filter;});
+			},
 			subFiltersForFilter(filter) {
 				return subFilters.filter( f => f.parent == filter.key && filter.filterValues.length > 0 && f.parentValue == filter.filterValues)
 			},
 			isFilterActive: function(filter) {
 				return this.filters[this.filters.indexOf(filter)].filterValues.length > 0;
-			},
-			isActive: function (number){
-				return number - 1 == this.page ? "activePage" : ""
-			},
-			isSelected: function (id){
-				return id == this.select || this.window_Width;
 			},
 			setPage: function (newPage){
 				// https://attacomsian.com/blog/javascript-check-variable-is-object#:~:text=Unlike%20Array.isArray%20%28%29%20method%20which%20we%20used%20for,object%20is%20by%20using%20the%20Object.prototype.toString%20%28%29%20method.
@@ -357,7 +350,7 @@ const subFilters = [];
 				}
 				return 0;
 			},
-			switchBodyPart: function(area){
+			switchBodyPart: function(area){   // return a color according to the body area
 				switch(area){
 					case("arm"):
 						return "primary"
@@ -400,7 +393,7 @@ const subFilters = [];
 				}, 500)
 
 			},
-			returnClass: function(x){
+			returnClass: function(x){   // draw the slider button
 				let ret = ""
 				if (x===1){  // slider button
 					if (this.animate<0){
@@ -434,9 +427,6 @@ const subFilters = [];
 				}
 				return ret
 			},
-			updateItemPage : function (event){
-				this.itemsPerPages = event.target.value
-			},
 			resetFilters : function (){
 				for (let item of this.filters) {
 					item.filterValues = []
@@ -468,7 +458,7 @@ const subFilters = [];
 				this.$root.$emit('pageNumber', this.filteredData.slice(this.page*this.itemsPerPages, (this.page+1)*this.itemsPerPages))
 				return this.filteredData.slice((this.page-1)*this.itemsPerPages, this.page*this.itemsPerPages)
 			},
-			pageNumber : function (){
+			pageNumber : function (){   // total number of pages
 				let mod = (this.filteredData.length % this.itemsPerPages)
 				return ((this.filteredData.length - mod)/this.itemsPerPages) + (mod != 0 ? 1 : 0)
 			},
