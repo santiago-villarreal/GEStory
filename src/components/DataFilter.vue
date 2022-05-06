@@ -449,7 +449,10 @@ const subFilters = [];
 				}
 				return temp
 				.filter(useConditions(filterList))
-				.sort((a,b)=>{return b.credibility - a.credibility});
+				.sort((a,b)=>{
+					if (!b.credibility) return -1;
+					if (!a.credibility) return 1;
+					return b.credibility - a.credibility});
 			},
 			filteredDataPage : function () {
 				if (!this.filteredData){

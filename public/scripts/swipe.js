@@ -62,14 +62,24 @@ function switchStyleDisplay(){
             actualizeArrows();
             for (let index = 0; index < pages.length; index++) {
                 if (index!=page){
-                    document.getElementById(pages[index]).style.display = "none"
+                    try{
+                        document.getElementById(pages[index]).style.display = "none"
+                    }
+                    catch{
+                        
+                    }
                 }
             }
         }else{
             document.getElementById("arrow-left").style.display="none"
             document.getElementById("arrow-right").style.display="none"
             for (elem of pages){
-                document.getElementById(elem).style.display = "block"
+                try{
+                    document.getElementById(elem).style.display = "block"
+                }
+                catch{
+
+                }
             }
         }
     })
