@@ -88,4 +88,4 @@ function addDeviceEnv(){
     fs.writeFileSync("data.json", JSON.stringify(fullData, null, "\t"))
 }
 
-//addDeviceEnv()
+addDeviceEnv()
